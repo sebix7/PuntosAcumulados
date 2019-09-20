@@ -52,7 +52,8 @@ public class Main {
 				email = teclado.next();
 				System.out.println("Ingrese su password");
 				password = teclado.next();
-				ingresoPermitido = miS.iniciarSesion(email, password); // El metodo iniciarSesion tiene que devolver un true
+				ingresoPermitido = miS.iniciarSesion(email, password); // El metodo iniciarSesion tiene que devolver un
+																		// true
 				break;
 			case 3:
 
