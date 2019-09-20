@@ -1,35 +1,88 @@
 package ar.edu.unlam;
 
+import java.util.Iterator;
+
 public class Sistema {
 
-	private ListaUsuarios usuarios;
-	private ListaProductos productos;
+	private Perfumeria perfumeria;
 	private Boolean sesionAbierta;
 
-	public Sistema() {
-		usuarios = new ListaUsuarios();
-		productos = new ListaProductos();
+	public Sistema(Perfumeria perfumeria) {
+		this.perfumeria = perfumeria;
 		sesionAbierta = false;
 	}
 
-	public void registro(Usuario usuario) {
-		usuarios.agregarUsuario(usuario);
-		System.out.println("¡Bienvenido!");
+	public Perfumeria getPerfumeria() {
+		return perfumeria;
 	}
 
-	public void darseDeBaja(Usuario usuario) {
-		usuarios.eliminarUsuario(usuario);
-		System.out.println("Bye, bye!");
+	public Boolean registro(Cliente nuevo) {
+		Integer errorDeValidacion1 = 0;
+		Integer errorDeValidacion2 = 0;
+		Boolean registroExitoso = false;
+		if (perfumeria.getClientes().size() == 0) {
+			perfumeria.getClientes().add(nuevo);
+			System.out.println("¡Bienvenido!");
+			registroExitoso = true;
+		} else {
+			/*
+			 * for (Cliente cliente : perfumeria.getClientes()) { if
+			 * (cliente.getNombreDeUsuario().equals(nuevo.getNombreDeUsuario())) {
+			 * System.out.println("Nombre de usuario ya existente");
+			 * 
+			 * } else { if (cliente.getEmail().equals(nuevo.getEmail())) {
+			 * System.out.println("Ya existe un usuario para ese correo"); } else {
+			 * perfumeria.getClientes().add(nuevo); System.out.println("¡Bienvenido!");
+			 * registroExitoso = true; } } }
+			 */
+			for (Cliente cliente : perfumeria.getClientes()) {
+				if (cliente.getNombreDeUsuario().equals(nuevo.getNombreDeUsuario())) {
+					errorDeValidacion1++;
+					break;
+				}
+			}
+
+			for (Cliente cliente : perfumeria.getClientes()) {
+				if (cliente.getEmail().equals(nuevo.getEmail())) {
+					errorDeValidacion2++;
+					break;
+				}
+			}
+
+			if (errorDeValidacion1 == 0 && errorDeValidacion2 == 0) {
+				perfumeria.getClientes().add(nuevo);
+				System.out.println("¡Bienvenido!");
+				registroExitoso = true;
+			} else {
+				if (errorDeValidacion1 == 1) {
+					System.out.println("Nombre de usuario ya existente");
+				} else {
+					if (errorDeValidacion2 == 1) {
+						System.out.println("Ya existe un usuario para ese correo");
+					}
+				}
+			}
+
+		}
+		return registroExitoso;
+	}
+
+	public void darseDeBaja(String email) {
+		Iterator it = perfumeria.getClientes().iterator();
+		while (it.hasNext()) {
+			Cliente cliente = (Cliente) it.next();
+			if (cliente.getEmail().equals(email)) {
+				it.remove();
+			}
+		}
 	}
 
 	public void iniciarSesion(String email, String password) {
-		for (int i = 0; i < usuarios.getLista().length; i++) {
-			if (usuarios.getLista()[i].getEmail() == email && usuarios.getLista()[i].getPassword() == password) {
-				System.out.println("Sesión Iniciada");
-				sesionAbierta = true;
-				break;
-			}
-		}
+		/*
+		 * Iterator it = perfumeria.getClientes().iterator(); while (it.hasNext()) {
+		 * Cliente cliente = (Cliente) it.next(); if (cliente.getEmail().equals(email)
+		 * && cliente.getPassword().equals(password)) { sesionAbierta = true; } }
+		 */
 	}
 
 	public void cerrarSesion() {
@@ -40,6 +93,8 @@ public class Sistema {
 	public void menuPrincipal() {
 		System.out.println("1. Registrarse");
 		System.out.println("2. Iniciar sesion");
+		System.out.println("3. ¿Has olvidado tu contraseña?");
+		System.out.println("4. Ver lista de clientes");
 	}
 
 	public void menuInterno() {

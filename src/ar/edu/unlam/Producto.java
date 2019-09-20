@@ -2,13 +2,16 @@ package ar.edu.unlam;
 
 public class Producto {
 
-	private String nombre;
+	private String descripcion;
 	private Double precio;
-	private Integer codigo;
+	private Integer idProducto;
+	private Integer puntosDelProducto;
 
-	public Producto(String nombre, Double precio, Integer codigo) {
-		this.nombre = nombre;
+	public Producto(String descripcion, Double precio, Integer idProducto, Integer puntosDelProducto) {
+		this.descripcion = descripcion;
 		this.precio = precio;
-		this.codigo = codigo;
+		this.idProducto = idProducto;
+		this.puntosDelProducto = puntosDelProducto;
 	}
+
 }

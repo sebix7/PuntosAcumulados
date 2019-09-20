@@ -2,15 +2,15 @@ package ar.edu.unlam;
 
 public class ListaUsuarios {
 
-	private Usuario[] lista;
+	private Cliente[] lista;
 	private Integer contador;
 
 	public ListaUsuarios() {
-		this.lista = new Usuario[50];
+		this.lista = new Cliente[50];
 		this.contador = 0;
 	}
 
-	public void agregarUsuario(Usuario nuevo) {
+	public void agregarUsuario(Cliente nuevo) {
 		if (contador <= 50) {
 			this.lista[contador] = nuevo;
 			this.contador++;
@@ -20,7 +20,7 @@ public class ListaUsuarios {
 
 	}
 
-	public void eliminarUsuario(Usuario aEliminar) {
+	public void eliminarUsuario(Cliente aEliminar) {
 		for (int i = 0; i < this.lista.length; i++) {
 			if (this.lista[i] == aEliminar) {
 				for (int j = i; j < this.lista.length - 1; j++) {
@@ -31,7 +31,7 @@ public class ListaUsuarios {
 		}
 	}
 
-	public void cambiarPassword(Usuario aModificar, String nuevaPassword) {
+	public void cambiarPassword(Cliente aModificar, String nuevaPassword) {
 		for (int i = 0; i < this.lista.length; i++) {
 			if (this.lista[i] == aModificar) {
 				this.lista[i].setPassword(nuevaPassword);
@@ -39,7 +39,7 @@ public class ListaUsuarios {
 		}
 	}
 
-	public Usuario[] getLista() {
+	public Cliente[] getLista() {
 		return lista;
 	}
 
