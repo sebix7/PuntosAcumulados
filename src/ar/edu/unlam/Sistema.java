@@ -77,12 +77,21 @@ public class Sistema {
 		}
 	}
 
-	public void iniciarSesion(String email, String password) {
-		/*
-		 * Iterator it = perfumeria.getClientes().iterator(); while (it.hasNext()) {
-		 * Cliente cliente = (Cliente) it.next(); if (cliente.getEmail().equals(email)
-		 * && cliente.getPassword().equals(password)) { sesionAbierta = true; } }
-		 */
+	public Boolean iniciarSesion(String email, String password) {
+		for (Cliente cliente : perfumeria.getClientes()) {
+			if (cliente.getEmail().equals(email) && cliente.getPassword().equals(password)) {
+				sesionAbierta = true;
+				break;
+			}
+		}
+
+		if (sesionAbierta == true) {
+			System.out.println("Inicio de sesion exitoso");
+		} else {
+			System.out.println("Datos no validos");
+		}
+
+		return sesionAbierta;
 	}
 
 	public void cerrarSesion() {
@@ -97,7 +106,7 @@ public class Sistema {
 		System.out.println("4. Ver lista de clientes");
 	}
 
-	public void menuInterno() {
+	public void menuSecundario() {
 		System.out.println("¿Qué desea hacer?");
 		System.out.println("1. Darse de Baja");
 		System.out.println("2. Cerrar Sesion");

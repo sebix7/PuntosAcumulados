@@ -34,7 +34,7 @@ public class Main {
 					Cliente nuevo = new Cliente(nombre, apellido, nombreDeUsuario, email, password);
 					ingresoPermitido = miS.registro(nuevo);
 				} while (ingresoPermitido == false);
-				miS.menuInterno();
+				miS.menuSecundario();
 				opcion2 = teclado.nextInt();
 				switch (opcion2) {
 				case 1:
@@ -52,8 +52,21 @@ public class Main {
 				email = teclado.next();
 				System.out.println("Ingrese su password");
 				password = teclado.next();
-				ingresoPermitido = miS.iniciarSesion(email, password); // El metodo iniciarSesion tiene que devolver un
-																		// true
+				ingresoPermitido = miS.iniciarSesion(email, password);
+				if (ingresoPermitido == true) {
+					miS.menuSecundario();
+					opcion2 = teclado.nextInt();
+					switch (opcion2) {
+					case 1:
+						miS.darseDeBaja(email);
+						break;
+					case 2:
+						miS.cerrarSesion();
+						System.out.println("");
+						ingresoPermitido = false;
+						break;
+					}
+				}
 				break;
 			case 3:
 
