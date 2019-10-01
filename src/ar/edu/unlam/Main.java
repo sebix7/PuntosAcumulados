@@ -2,78 +2,60 @@ package ar.edu.unlam;
 
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import org.junit.Test;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		Perfumeria miP = new Perfumeria();
-		Sistema miS = new Sistema(miP);
+		Perfumeria miPrograma = new Perfumeria();
+		Sistema miSistema = new Sistema(miPrograma);
 		String nombre, apellido, nombreDeUsuario, email, password;
 		Integer opcion1, opcion2 = 0;
 		Boolean ingresoPermitido = false;
 
 		Scanner teclado = new Scanner(System.in);
 		do {
-			miS.menuPrincipal();
-			opcion1 = teclado.nextInt();
+			opcion1 = miSistema.menuPrincipal();
 			switch (opcion1) {
 			case 1:
 				do {
-					System.out.println("Ingrese su nombre");
-					nombre = teclado.next();
-					System.out.println("Ingrese su apellido");
-					apellido = teclado.next();
-					System.out.println("Ingrese su nombre de usuario");
-					nombreDeUsuario = teclado.next();
-					System.out.println("Ingrese su email");
-					email = teclado.next();
-					System.out.println("Ingrese su password");
-					password = teclado.next();
+					nombre = JOptionPane.showInputDialog("Ingrese su nombre");
+					apellido = JOptionPane.showInputDialog("Ingrese su apellido");
+					nombreDeUsuario = JOptionPane.showInputDialog("Ingrese nombre de usuario");
+					email = JOptionPane.showInputDialog("Ingrese su email");
+					password = JOptionPane.showInputDialog("Ingrese password");
 					Cliente nuevo = new Cliente(nombre, apellido, nombreDeUsuario, email, password);
-					ingresoPermitido = miS.registro(nuevo);
+					ingresoPermitido = miSistema.registro(nuevo);
 				} while (ingresoPermitido == false);
-				miS.menuSecundario();
-				opcion2 = teclado.nextInt();
+				
+				opcion2 = miSistema.menuInterno();
 				switch (opcion2) {
 				case 1:
-					miS.darseDeBaja(email);
+					miSistema.darseDeBaja(email);
 					break;
 				case 2:
-					miS.cerrarSesion();
+					miSistema.cerrarSesion();
 					System.out.println("");
 					ingresoPermitido = false;
 					break;
 				}
 				break;
 			case 2:
-				System.out.println("Ingrese su email");
-				email = teclado.next();
-				System.out.println("Ingrese su password");
-				password = teclado.next();
-				ingresoPermitido = miS.iniciarSesion(email, password);
-				if (ingresoPermitido == true) {
-					miS.menuSecundario();
-					opcion2 = teclado.nextInt();
-					switch (opcion2) {
-					case 1:
-						miS.darseDeBaja(email);
-						break;
-					case 2:
-						miS.cerrarSesion();
-						System.out.println("");
-						ingresoPermitido = false;
-						break;
-					}
-				}
+				email = JOptionPane.showInputDialog("Ingrese su email");
+				password = JOptionPane.showInputDialog("Ingrese su password");
+				JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+				//ingresoPermitido = miS.iniciarSesion(email, password); // El metodo iniciarSesion tiene que devolver un
+																		// true
 				break;
 			case 3:
 
 				break;
 			case 4:
-				System.out.println("Cantidad de clientes registrados: " + miS.getPerfumeria().getClientes().size());
-				System.out.println(miS.getPerfumeria().mostrarListaDeClientes());
+				System.out.println("Cantidad de clientes registrados: " + miSistema.getPerfumeria().getClientes().size());
+				System.out.println(miSistema.getPerfumeria().mostrarListaDeClientes());
 				break;
 			}
 		} while (opcion1 == 4 || opcion2 == 1 || opcion2 == 2);

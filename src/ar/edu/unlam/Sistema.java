@@ -2,6 +2,8 @@ package ar.edu.unlam;
 
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 public class Sistema {
 
 	private Perfumeria perfumeria;
@@ -22,7 +24,7 @@ public class Sistema {
 		Boolean registroExitoso = false;
 		if (perfumeria.getClientes().size() == 0) {
 			perfumeria.getClientes().add(nuevo);
-			System.out.println("¡Bienvenido!");
+			JOptionPane.showMessageDialog(null, "Se ha registrado satisfactoriamente");
 			registroExitoso = true;
 		} else {
 			/*
@@ -77,39 +79,29 @@ public class Sistema {
 		}
 	}
 
-	public Boolean iniciarSesion(String email, String password) {
-		for (Cliente cliente : perfumeria.getClientes()) {
-			if (cliente.getEmail().equals(email) && cliente.getPassword().equals(password)) {
-				sesionAbierta = true;
-				break;
-			}
-		}
-
-		if (sesionAbierta == true) {
-			System.out.println("Inicio de sesion exitoso");
-		} else {
-			System.out.println("Datos no validos");
-		}
-
-		return sesionAbierta;
+	public void iniciarSesion(String email, String password) {
+		/*
+		 * Iterator it = perfumeria.getClientes().iterator(); while (it.hasNext()) {
+		 * Cliente cliente = (Cliente) it.next(); if (cliente.getEmail().equals(email)
+		 * && cliente.getPassword().equals(password)) { sesionAbierta = true; } }
+		 */
 	}
 
 	public void cerrarSesion() {
-		System.out.println("Sesión Cerrada");
+		JOptionPane.showMessageDialog(null, "Sesión Cerrada");
 		sesionAbierta = false;
 	}
 
-	public void menuPrincipal() {
-		System.out.println("1. Registrarse");
-		System.out.println("2. Iniciar sesion");
-		System.out.println("3. ¿Has olvidado tu contraseña?");
-		System.out.println("4. Ver lista de clientes");
+	public Integer menuPrincipal() {
+		Integer seleccion;
+		seleccion = Integer.parseInt(JOptionPane.showInputDialog("1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes "));
+		return seleccion;
 	}
 
-	public void menuSecundario() {
-		System.out.println("¿Qué desea hacer?");
-		System.out.println("1. Darse de Baja");
-		System.out.println("2. Cerrar Sesion");
+	public Integer menuInterno() {
+		Integer seleccion;
+		seleccion = Integer.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
+		return seleccion;
 	}
 
 }
