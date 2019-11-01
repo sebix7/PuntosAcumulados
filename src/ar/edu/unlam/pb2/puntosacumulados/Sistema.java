@@ -88,10 +88,14 @@ public class Sistema {
 		sesionAbierta = false;
 	}
 
-	public Integer menuPrincipal() {
+	public Integer menuPrincipal() throws OpcionMenuPrincipalInvalidaException {
 		Integer seleccion;
 		seleccion = Integer.parseInt(JOptionPane.showInputDialog("1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes "));
-		return seleccion;
+		if (seleccion >= 1 && seleccion <= 4) {
+			return seleccion;
+		} else {
+			throw new OpcionMenuPrincipalInvalidaException();
+		}
 	}
 
 	public Integer menuInterno() {

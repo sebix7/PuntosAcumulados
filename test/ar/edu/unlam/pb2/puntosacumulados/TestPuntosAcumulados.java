@@ -3,27 +3,51 @@ package ar.edu.unlam.pb2.puntosacumulados;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ar.edu.unlam.pb2.puntosacumulados.Cliente;
-import ar.edu.unlam.pb2.puntosacumulados.Local;
-import ar.edu.unlam.pb2.puntosacumulados.Sistema;
-
 public class TestPuntosAcumulados {
 
-	/*@Test
+	@Test
+	public void testOpcionMenuPrincipalCorrecto() {
+		Local miP = new Local();
+		Sistema miSistema = new Sistema(miP);
+		Integer vO = 0;
+		
+		try {
+			vO = miSistema.menuPrincipal();
+		} catch (OpcionMenuPrincipalInvalidaException e) {
+			e.printStackTrace();
+		}
+		
+		Integer vE = 1;
+		Assert.assertEquals(vO, vE);
+		
+	}
+	
+	@Test(expected = OpcionMenuPrincipalInvalidaException.class)
+	public void testOpcionMenuPrincipalIncorrecto() throws OpcionMenuPrincipalInvalidaException{
+		Local miP = new Local();
+		Sistema miSistema = new Sistema(miP);
+		
+		miSistema.menuPrincipal();
+		
+	}
+	
+	@Test
 	public void testQueVerificaQueUnClienteFueRegistrado() {
 		Local miP = new Local();
-		Sistema miS = new Sistema(miP);
+		Sistema miSistema = new Sistema(miP);
+		
 		String nombre = "Sebastian";
 		String apellido = "Rodriguez";
 		String nombreDeUsuario = "sebix7";
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";
-		Cliente nuevo = new Cliente(nombre, apellido, nombreDeUsuario, email, password);
+		Cliente nuevo = new Cliente(nombre, apellido, edad, nombreDeUsuario, email, password);
+		
 		Assert.assertTrue(miS.registro(nuevo));
 		Assert.assertEquals(1, miS.getPerfumeria().getClientes().size());
 	}
 
-	@Test
+	/*@Test
 	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnNombreDeUsuarioOUnEmailYaExistente() {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
