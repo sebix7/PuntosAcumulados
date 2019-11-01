@@ -55,12 +55,16 @@ public class Main {
 				}
 				break;
 			case 2:
+				Boolean aux = true;
+				do {
 				email = JOptionPane.showInputDialog("Ingrese su email");
 				password = JOptionPane.showInputDialog("Ingrese su password");
-				JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
-				// ingresoPermitido = miS.iniciarSesion(email, password); // El metodo
-				// iniciarSesion tiene que devolver un
-				// true
+				try {
+					aux = miSistema.iniciarSesion(email, password);
+				} catch (DatosDeUsuarioInexistenteException e) {
+					e.printStackTrace();
+				}
+				} while (aux == false);
 				break;
 			case 3:
 

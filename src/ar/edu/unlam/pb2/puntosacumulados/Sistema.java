@@ -76,14 +76,21 @@ public class Sistema {
 		}
 	}
 
-	public Boolean iniciarSesion(String email, String password) {
-		Iterator it = local.getClientes().iterator();
-		while (it.hasNext()) {
-			Cliente cliente = (Cliente) it.next();
-			if (cliente.getUsuarioCliente().getEmail().equals(email) && cliente.getUsuarioCliente().getPassword().equals(password)) {
-				sesionAbierta = true;
+	public Boolean iniciarSesion(String email, String password) throws DatosDeUsuarioInexistenteException {
+		if (local.getClientes().size()>0) {
+			for (Cliente cliente : local.getClientes()) {
+				if (cliente.getUsuarioCliente().getEmail().equals(email) && cliente.getUsuarioCliente().getPassword().equals(password)) {
+					sesionAbierta = true;
+					JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+					break;
+				}
 			}
 		}
+		
+		if (local.getClientes().size()==0 || sesionAbierta==false) {
+			throw new DatosDeUsuarioInexistenteException();
+		}
+		
 		return sesionAbierta;
 	}
 
@@ -95,8 +102,8 @@ public class Sistema {
 	public Integer menuPrincipal() throws OpcionMenuPrincipalInvalidaException {
 		Integer seleccion;
 		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
-				"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes "));
-		if (seleccion >= 1 && seleccion <= 4) {
+				"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes \n5. Salir"));
+		if (seleccion >= 1 && seleccion <= 5) {
 			return seleccion;
 		} else {
 			throw new OpcionMenuPrincipalInvalidaException();

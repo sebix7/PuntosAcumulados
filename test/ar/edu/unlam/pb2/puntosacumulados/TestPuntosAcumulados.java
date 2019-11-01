@@ -115,7 +115,7 @@ public class TestPuntosAcumulados {
 	}
 	
 	@Test
-	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteYaRegistrado() {
+	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteRegistrado() {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
 		String nombre1 = "Sebastian";
@@ -133,8 +133,22 @@ public class TestPuntosAcumulados {
 			e.printStackTrace();
 		}
 		
-		miS.cerrarSesion();
-		//Assert.assertTrue(miS.iniciarSesion(email1, password1));
+		try {
+			Assert.assertTrue(miS.iniciarSesion(email1, password1));
+		} catch (DatosDeUsuarioInexistenteException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test(expected = DatosDeUsuarioInexistenteException.class)
+	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistrado() throws DatosDeUsuarioInexistenteException {
+		Local miP = new Local();
+		Sistema miS = new Sistema(miP);
+		
+		String email1 = "sebeatport@gmail.com";
+		String password1 = "pryda";
+		
+		miS.iniciarSesion(email1, password1);
 	}
 	
 	/*@Test
