@@ -3,12 +3,12 @@ package ar.edu.unlam.pb2.puntosacumulados;
 import java.time.LocalDate;
 
 public abstract class Persona {
+	
 	private String nombre;
 	private String apellido;
 	private LocalDate edad;
 
 	public Persona(String nombre, String apellido, LocalDate edad) {
-		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.edad = edad;

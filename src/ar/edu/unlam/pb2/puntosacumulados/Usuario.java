@@ -7,7 +7,6 @@ public class Usuario {
 	private String password;
 
 	public Usuario(String nombreDeUsuario, String email, String password) {
-		super();
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.email = email;
 		this.password = password;
