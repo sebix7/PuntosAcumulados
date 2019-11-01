@@ -20,7 +20,7 @@ public class Main {
 		do {
 			try {
 				opcion1 = miSistema.menuPrincipal();
-			} catch (Exception e) {
+			} catch (OpcionInvalidaException e) {
 				e.printStackTrace();
 			}
 
@@ -42,7 +42,11 @@ public class Main {
 					}
 				} while (ingresoPermitido == false);
 
-				opcion2 = miSistema.menuInterno();
+				try {
+					opcion2 = miSistema.submenu();
+				} catch (OpcionInvalidaException e1) {
+					e1.printStackTrace();
+				}
 				switch (opcion2) {
 				case 1:
 					miSistema.darseDeBaja(email);
@@ -61,7 +65,7 @@ public class Main {
 				password = JOptionPane.showInputDialog("Ingrese su password");
 				try {
 					aux = miSistema.iniciarSesion(email, password);
-				} catch (DatosDeUsuarioInexistenteException e) {
+				} catch (DatosDeUsuarioNoValidosException e) {
 					e.printStackTrace();
 				}
 				} while (aux == false);
@@ -74,7 +78,7 @@ public class Main {
 				System.out.println(miSistema.getLocal().mostrarListaDeClientes());
 				break;
 			}
-		} while (opcion1 == 4 || opcion2 == 1 || opcion2 == 2);
+		} while (opcion1 == 4 || opcion2 == 1 || opcion2 == 2 || opcion1 < 1 || opcion1 > 5);
 
 	}
 

@@ -10,52 +10,139 @@ public class TestPuntosAcumulados {
 		Local miP = new Local();
 		Sistema miSistema = new Sistema(miP);
 		Integer vO = 0;
-		
+
 		try {
 			vO = miSistema.menuPrincipal();
-		} catch (OpcionMenuPrincipalInvalidaException e) {
+		} catch (OpcionInvalidaException e) {
+			e.printStackTrace();
+		} catch (SesionAbiertaException e) {
 			e.printStackTrace();
 		}
-		
+
 		Integer vE = 1;
 		Assert.assertEquals(vO, vE);
-		
+
 	}
-	
-	@Test(expected = OpcionMenuPrincipalInvalidaException.class)
-	public void testOpcionMenuPrincipalIncorrecto() throws OpcionMenuPrincipalInvalidaException{
+
+	@Test(expected = OpcionInvalidaException.class)
+	public void testOpcionMenuPrincipalIncorrecto() throws OpcionInvalidaException, SesionAbiertaException {
 		Local miP = new Local();
 		Sistema miSistema = new Sistema(miP);
-		
+
 		miSistema.menuPrincipal();
-		
+		// Debe ingresarse un valor menor a 1 o mayor a 5 para que se cumpla lo
+		// esperado.
 	}
-	
-	@Test
-	public void testQueVerificaQueUnClienteFueRegistradoSatisfactoriamente() {
+
+	@Test(expected = SesionCerradaException.class)
+	public void testQueVerificaQueNoSePuedenAplicarMetodosDeSesionAbiertaEstandoLaSesionCerrada()
+			throws SesionCerradaException {
 		Local miP = new Local();
 		Sistema miSistema = new Sistema(miP);
-		
+
+		// Al recién haber creado mi sistema, la sesión esta cerrada (sesionAbierta =
+		// false) por defecto.
+		// O sea que estando en esta condición no podría, por ejemplo, cerrar sesión, ya
+		// que para eso necesitaría que la sesión esté abierta (en true).
+
+		miSistema.cerrarSesion();
+
+	}
+
+	@Test(expected = SesionAbiertaException.class)
+	public void testQueVerificaQueNoSePuedenAplicarMetodosDeSesionCerradaEstandoLaSesionAbierta()
+			throws DatosDeUsuarioNoValidosException, SesionAbiertaException {
+		Local miP = new Local();
+		Sistema miSistema = new Sistema(miP);
+
 		String nombre = "Sebastian";
 		String apellido = "Rodriguez";
 		String nombreDeUsuario = "sebix7";
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";
 		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password);
-		
+
 		try {
-			miSistema.registro(nuevo);
+			Assert.assertTrue(miSistema.registro(nuevo));
 		} catch (UsuarioExistenteException e) {
 			e.printStackTrace();
 		} catch (CorreoExistenteException e) {
 			e.printStackTrace();
+		} catch (SesionAbiertaException e) {
+			e.printStackTrace();
 		}
-		
+
+		// Cuendo el registro es exitoso, la sesión se abre automaticamente
+		// (sesionAbierta = true).
+		// O sea que estando en esta condición no podría, por ejemplo, iniciar sesión,
+		// ya que para eso necesitaría que la sesión esté cerrada (en false).
+
+		miSistema.iniciarSesion(email, password);
+
+	}
+
+	@Test
+	public void testQueVerificaQueUnClienteFueRegistradoSatisfactoriamente() {
+		Local miP = new Local();
+		Sistema miSistema = new Sistema(miP);
+
+		String nombre = "Sebastian";
+		String apellido = "Rodriguez";
+		String nombreDeUsuario = "sebix7";
+		String email = "sebeatport@gmail.com";
+		String password = "pryda";
+		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password);
+
+		try {
+			Assert.assertTrue(miSistema.registro(nuevo));
+		} catch (UsuarioExistenteException e) {
+			e.printStackTrace();
+		} catch (CorreoExistenteException e) {
+			e.printStackTrace();
+		} catch (SesionAbiertaException e) {
+			e.printStackTrace();
+		}
+
 		Assert.assertEquals(1, miSistema.getLocal().getClientes().size());
 	}
 
+	@Test
+	public void testQueCorroboraQueLaSesionSeAbreYSeCierra() {
+		Local miP = new Local();
+		Sistema miS = new Sistema(miP);
+		Assert.assertFalse(miS.getSesionAbierta());
+
+		String nombre1 = "Sebastian";
+		String apellido1 = "Rodriguez";
+		String nombreDeUsuario1 = "sebix7";
+		String email1 = "sebeatport@gmail.com";
+		String password1 = "pryda";
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
+
+		try {
+			miS.registro(nuevo1);
+		} catch (UsuarioExistenteException e) {
+			e.printStackTrace();
+		} catch (CorreoExistenteException e) {
+			e.printStackTrace();
+		} catch (SesionAbiertaException e) {
+			e.printStackTrace();
+		}
+
+		Assert.assertTrue(miS.getSesionAbierta());
+
+		try {
+			miS.cerrarSesion();
+		} catch (SesionCerradaException e) {
+			e.printStackTrace();
+		}
+
+		Assert.assertFalse(miS.getSesionAbierta());
+	}
+
 	@Test(expected = CorreoExistenteException.class)
-	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnEmailYaExistente() throws CorreoExistenteException, UsuarioExistenteException {
+	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnEmailYaExistente()
+			throws CorreoExistenteException, UsuarioExistenteException, SesionAbiertaException {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
 		String nombre1 = "Sebastian";
@@ -70,22 +157,27 @@ public class TestPuntosAcumulados {
 		String email2 = "sebeatport@gmail.com";
 		String password2 = "iloverubius";
 		Cliente nuevo2 = new Cliente(nombre2, apellido2, null, nombreDeUsuario2, email2, password2);
-		
+
 		try {
 			miS.registro(nuevo1);
-		} catch (UsuarioExistenteException e) {
-			e.printStackTrace();
-		} catch (CorreoExistenteException e) {
+		} catch (SesionAbiertaException e) {
 			e.printStackTrace();
 		}
-		
+
+		try {
+			miS.cerrarSesion();
+		} catch (SesionCerradaException e) {
+			e.printStackTrace();
+		}
+
 		miS.registro(nuevo2);
-		
+
 		Assert.assertEquals(1, miS.getLocal().getClientes().size());
 	}
 
 	@Test(expected = UsuarioExistenteException.class)
-	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnUsuarioYaExistente() throws CorreoExistenteException, UsuarioExistenteException {
+	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnUsuarioYaExistente()
+			throws CorreoExistenteException, UsuarioExistenteException, SesionAbiertaException {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
 		String nombre1 = "Sebastian";
@@ -100,22 +192,26 @@ public class TestPuntosAcumulados {
 		String email3 = "elrodri@gmail.com";
 		String password3 = "Dioxis";
 		Cliente nuevo3 = new Cliente(nombre3, apellido3, null, nombreDeUsuario3, email3, password3);
-		
+
 		try {
 			miS.registro(nuevo1);
-		} catch (UsuarioExistenteException e) {
-			e.printStackTrace();
-		} catch (CorreoExistenteException e) {
+		} catch (SesionAbiertaException e) {
 			e.printStackTrace();
 		}
-		
+
+		try {
+			miS.cerrarSesion();
+		} catch (SesionCerradaException e) {
+			e.printStackTrace();
+		}
+
 		miS.registro(nuevo3);
-		
+
 		Assert.assertEquals(1, miS.getLocal().getClientes().size());
 	}
-	
+
 	@Test
-	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteRegistrado() {
+	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteRegistradoOExistente() {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
 		String nombre1 = "Sebastian";
@@ -124,46 +220,75 @@ public class TestPuntosAcumulados {
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
 		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
-		
+
 		try {
 			miS.registro(nuevo1);
-		} catch (UsuarioExistenteException e) {
-			e.printStackTrace();
-		} catch (CorreoExistenteException e) {
-			e.printStackTrace();
+		} catch (UsuarioExistenteException e1) {
+			e1.printStackTrace();
+		} catch (CorreoExistenteException e1) {
+			e1.printStackTrace();
+		} catch (SesionAbiertaException e1) {
+			e1.printStackTrace();
 		}
-		
+
+		try {
+			miS.cerrarSesion();
+		} catch (SesionCerradaException e1) {
+			e1.printStackTrace();
+		}
+
 		try {
 			Assert.assertTrue(miS.iniciarSesion(email1, password1));
-		} catch (DatosDeUsuarioInexistenteException e) {
+		} catch (DatosDeUsuarioNoValidosException e) {
+			e.printStackTrace();
+		} catch (SesionAbiertaException e) {
 			e.printStackTrace();
 		}
+
 	}
-	
-	@Test(expected = DatosDeUsuarioInexistenteException.class)
-	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistrado() throws DatosDeUsuarioInexistenteException {
+
+	@Test(expected = DatosDeUsuarioNoValidosException.class)
+	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistradoOInexistente()
+			throws DatosDeUsuarioNoValidosException, SesionAbiertaException {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
-		
+
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
-		
+
 		miS.iniciarSesion(email1, password1);
+
 	}
-	
-	/*@Test
-	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistrado() {
+
+	@Test
+	public void testOpcionSubmenuCorrecto() {
 		Local miP = new Local();
-		Sistema miS = new Sistema(miP);
-		String nombre1 = "Sebastian";
-		String apellido1 = "Rodriguez";
-		String nombreDeUsuario1 = "sebix7";
-		String email1 = "sebeatport@gmail.com";
-		String password1 = "pryda";
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, nombreDeUsuario1, email1, password1);
-		miS.registro(nuevo1);
-		miS.cerrarSesion();
-		//Assert.assertFalse(miS.iniciarSesion("nadie@nada.com.mx", "blablabla"));
+		Sistema miSistema = new Sistema(miP);
+		Integer vO = 0;
+
+		miSistema.setSesionAbierta(true);
+
+		try {
+			vO = miSistema.submenu();
+		} catch (OpcionInvalidaException e) {
+			e.printStackTrace();
+		} catch (SesionCerradaException e) {
+			e.printStackTrace();
+		}
+
+		Integer vE = 1;
+		Assert.assertEquals(vO, vE);
+
 	}
-*/
+
+	@Test(expected = OpcionInvalidaException.class)
+	public void testOpcionSubmenuIncorrecto() throws OpcionInvalidaException, SesionCerradaException {
+		Local miP = new Local();
+		Sistema miSistema = new Sistema(miP);
+
+		miSistema.setSesionAbierta(true);
+
+		miSistema.submenu(); // Debe ingresarse un valor distinto de 1 o 2 para quese cumpla lo esperado.
+	}
+
 }
