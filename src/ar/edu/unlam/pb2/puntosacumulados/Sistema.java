@@ -14,7 +14,7 @@ public class Sistema {
 		sesionAbierta = false;
 	}
 
-	public Boolean registro(Cliente nuevo) {
+	public Boolean registro(Cliente nuevo) throws UsuarioExistenteException, CorreoExistenteException {
 		Integer errorDeValidacion1 = 0;
 		Integer errorDeValidacion2 = 0;
 		Boolean registroExitoso = false;
@@ -34,7 +34,8 @@ public class Sistema {
 			 * registroExitoso = true; } } }
 			 */
 			for (Cliente cliente : local.getClientes()) {
-				if (cliente.getUsuarioCliente().getEmail().equals(nuevo.getUsuarioCliente().getEmail())) {
+				if (cliente.getUsuarioCliente().getNombreDeUsuario()
+						.equals(nuevo.getUsuarioCliente().getNombreDeUsuario())) {
 					errorDeValidacion1++;
 					break;
 				}
@@ -49,14 +50,14 @@ public class Sistema {
 
 			if (errorDeValidacion1 == 0 && errorDeValidacion2 == 0) {
 				local.getClientes().add(nuevo);
-				System.out.println("¡Bienvenido!");
+				JOptionPane.showMessageDialog(null, "Se ha registrado satisfactoriamente");
 				registroExitoso = true;
 			} else {
 				if (errorDeValidacion1 == 1) {
-					System.out.println("Nombre de usuario ya existente");
+					throw new UsuarioExistenteException();
 				} else {
 					if (errorDeValidacion2 == 1) {
-						System.out.println("Ya existe un usuario para ese correo");
+						throw new CorreoExistenteException();
 					}
 				}
 			}
@@ -75,22 +76,26 @@ public class Sistema {
 		}
 	}
 
-	public void iniciarSesion(String email, String password) {
-		/*
-		 * Iterator it = perfumeria.getClientes().iterator(); while (it.hasNext()) {
-		 * Cliente cliente = (Cliente) it.next(); if (cliente.getEmail().equals(email)
-		 * && cliente.getPassword().equals(password)) { sesionAbierta = true; } }
-		 */
+	public Boolean iniciarSesion(String email, String password) {
+		Iterator it = local.getClientes().iterator();
+		while (it.hasNext()) {
+			Cliente cliente = (Cliente) it.next();
+			if (cliente.getUsuarioCliente().getEmail().equals(email) && cliente.getUsuarioCliente().getPassword().equals(password)) {
+				sesionAbierta = true;
+			}
+		}
+		return sesionAbierta;
 	}
 
-	public void cerrarSesion() {
+	public Boolean cerrarSesion() {
 		JOptionPane.showMessageDialog(null, "Sesión Cerrada");
-		sesionAbierta = false;
+		return sesionAbierta = false;
 	}
 
 	public Integer menuPrincipal() throws OpcionMenuPrincipalInvalidaException {
 		Integer seleccion;
-		seleccion = Integer.parseInt(JOptionPane.showInputDialog("1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes "));
+		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
+				"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes "));
 		if (seleccion >= 1 && seleccion <= 4) {
 			return seleccion;
 		} else {
@@ -100,7 +105,8 @@ public class Sistema {
 
 	public Integer menuInterno() {
 		Integer seleccion;
-		seleccion = Integer.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
+		seleccion = Integer
+				.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
 		return seleccion;
 	}
 
@@ -119,7 +125,5 @@ public class Sistema {
 	public void setSesionAbierta(Boolean sesionAbierta) {
 		this.sesionAbierta = sesionAbierta;
 	}
-	
-	
 
 }

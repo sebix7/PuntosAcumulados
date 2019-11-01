@@ -32,7 +32,7 @@ public class TestPuntosAcumulados {
 	}
 	
 	@Test
-	public void testQueVerificaQueUnClienteFueRegistrado() {
+	public void testQueVerificaQueUnClienteFueRegistradoSatisfactoriamente() {
 		Local miP = new Local();
 		Sistema miSistema = new Sistema(miP);
 		
@@ -41,14 +41,21 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario = "sebix7";
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";
-		Cliente nuevo = new Cliente(nombre, apellido, edad, nombreDeUsuario, email, password);
+		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password);
 		
-		Assert.assertTrue(miS.registro(nuevo));
-		Assert.assertEquals(1, miS.getPerfumeria().getClientes().size());
+		try {
+			miSistema.registro(nuevo);
+		} catch (UsuarioExistenteException e) {
+			e.printStackTrace();
+		} catch (CorreoExistenteException e) {
+			e.printStackTrace();
+		}
+		
+		Assert.assertEquals(1, miSistema.getLocal().getClientes().size());
 	}
 
-	/*@Test
-	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnNombreDeUsuarioOUnEmailYaExistente() {
+	@Test(expected = CorreoExistenteException.class)
+	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnEmailYaExistente() throws CorreoExistenteException, UsuarioExistenteException {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);
 		String nombre1 = "Sebastian";
@@ -56,25 +63,57 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario1 = "sebix7";
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, nombreDeUsuario1, email1, password1);
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
 		String nombre2 = "Mauro";
 		String apellido2 = "Perrone";
 		String nombreDeUsuario2 = "mantonella";
 		String email2 = "sebeatport@gmail.com";
 		String password2 = "iloverubius";
-		Cliente nuevo2 = new Cliente(nombre2, apellido2, nombreDeUsuario2, email2, password2);
+		Cliente nuevo2 = new Cliente(nombre2, apellido2, null, nombreDeUsuario2, email2, password2);
+		
+		try {
+			miS.registro(nuevo1);
+		} catch (UsuarioExistenteException e) {
+			e.printStackTrace();
+		} catch (CorreoExistenteException e) {
+			e.printStackTrace();
+		}
+		
+		miS.registro(nuevo2);
+		
+		Assert.assertEquals(1, miS.getLocal().getClientes().size());
+	}
+
+	@Test(expected = UsuarioExistenteException.class)
+	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnUsuarioYaExistente() throws CorreoExistenteException, UsuarioExistenteException {
+		Local miP = new Local();
+		Sistema miS = new Sistema(miP);
+		String nombre1 = "Sebastian";
+		String apellido1 = "Rodriguez";
+		String nombreDeUsuario1 = "sebix7";
+		String email1 = "sebeatport@gmail.com";
+		String password1 = "pryda";
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
 		String nombre3 = "Rodrigo";
 		String apellido3 = "Acosta";
 		String nombreDeUsuario3 = "sebix7";
 		String email3 = "elrodri@gmail.com";
 		String password3 = "Dioxis";
-		Cliente nuevo3 = new Cliente(nombre3, apellido3, nombreDeUsuario3, email3, password3);
-		Assert.assertTrue(miS.registro(nuevo1));
-		Assert.assertFalse(miS.registro(nuevo2));
-		Assert.assertFalse(miS.registro(nuevo3));
-		Assert.assertEquals(1, miS.getPerfumeria().getClientes().size());
+		Cliente nuevo3 = new Cliente(nombre3, apellido3, null, nombreDeUsuario3, email3, password3);
+		
+		try {
+			miS.registro(nuevo1);
+		} catch (UsuarioExistenteException e) {
+			e.printStackTrace();
+		} catch (CorreoExistenteException e) {
+			e.printStackTrace();
+		}
+		
+		miS.registro(nuevo3);
+		
+		Assert.assertEquals(1, miS.getLocal().getClientes().size());
 	}
-
+	
 	@Test
 	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteYaRegistrado() {
 		Local miP = new Local();
@@ -84,13 +123,21 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario1 = "sebix7";
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, nombreDeUsuario1, email1, password1);
-		miS.registro(nuevo1);
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
+		
+		try {
+			miS.registro(nuevo1);
+		} catch (UsuarioExistenteException e) {
+			e.printStackTrace();
+		} catch (CorreoExistenteException e) {
+			e.printStackTrace();
+		}
+		
 		miS.cerrarSesion();
 		//Assert.assertTrue(miS.iniciarSesion(email1, password1));
 	}
-
-	@Test
+	
+	/*@Test
 	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistrado() {
 		Local miP = new Local();
 		Sistema miS = new Sistema(miP);

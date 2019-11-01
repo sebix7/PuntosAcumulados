@@ -32,8 +32,14 @@ public class Main {
 					nombreDeUsuario = JOptionPane.showInputDialog("Ingrese nombre de usuario");
 					email = JOptionPane.showInputDialog("Ingrese su email");
 					password = JOptionPane.showInputDialog("Ingrese password");
-					Cliente nuevo = new Cliente(nombre, apellido, null); // null es localDate
-					ingresoPermitido = miSistema.registro(nuevo);
+					Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password); // null es localDate
+					try {
+						ingresoPermitido = miSistema.registro(nuevo);
+					} catch (UsuarioExistenteException e) {
+						e.printStackTrace();
+					} catch (CorreoExistenteException e) {
+						e.printStackTrace();
+					}
 				} while (ingresoPermitido == false);
 
 				opcion2 = miSistema.menuInterno();
