@@ -1,4 +1,4 @@
-package ar.edu.unlam;
+package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Perfumeria miPrograma = new Perfumeria();
+		Local miPrograma = new Local();
 		Sistema miSistema = new Sistema(miPrograma);
 		String nombre, apellido, nombreDeUsuario, email, password;
 		Integer opcion1, opcion2 = 0;
@@ -27,7 +27,7 @@ public class Main {
 					nombreDeUsuario = JOptionPane.showInputDialog("Ingrese nombre de usuario");
 					email = JOptionPane.showInputDialog("Ingrese su email");
 					password = JOptionPane.showInputDialog("Ingrese password");
-					Cliente nuevo = new Cliente(nombre, apellido, nombreDeUsuario, email, password);
+					Cliente nuevo = new Cliente(nombre, apellido, null); // null es localDate
 					ingresoPermitido = miSistema.registro(nuevo);
 				} while (ingresoPermitido == false);
 				
@@ -54,8 +54,8 @@ public class Main {
 
 				break;
 			case 4:
-				System.out.println("Cantidad de clientes registrados: " + miSistema.getPerfumeria().getClientes().size());
-				System.out.println(miSistema.getPerfumeria().mostrarListaDeClientes());
+				System.out.println("Cantidad de clientes registrados: " + miSistema.getLocal().getClientes().size());
+				System.out.println(miSistema.getLocal().mostrarListaDeClientes());
 				break;
 			}
 		} while (opcion1 == 4 || opcion2 == 1 || opcion2 == 2);

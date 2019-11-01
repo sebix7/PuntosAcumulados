@@ -1,4 +1,4 @@
-package ar.edu.unlam;
+package ar.edu.unlam.pb2.puntosacumulados;
 
 public class Producto {
 

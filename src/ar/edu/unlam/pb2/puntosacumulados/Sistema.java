@@ -1,4 +1,4 @@
-package ar.edu.unlam;
+package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.Iterator;
 
@@ -6,24 +6,20 @@ import javax.swing.JOptionPane;
 
 public class Sistema {
 
-	private Perfumeria perfumeria;
+	private Local local;
 	private Boolean sesionAbierta;
 
-	public Sistema(Perfumeria perfumeria) {
-		this.perfumeria = perfumeria;
+	public Sistema(Local local) {
+		this.local = local;
 		sesionAbierta = false;
-	}
-
-	public Perfumeria getPerfumeria() {
-		return perfumeria;
 	}
 
 	public Boolean registro(Cliente nuevo) {
 		Integer errorDeValidacion1 = 0;
 		Integer errorDeValidacion2 = 0;
 		Boolean registroExitoso = false;
-		if (perfumeria.getClientes().size() == 0) {
-			perfumeria.getClientes().add(nuevo);
+		if (local.getClientes().size() == 0) {
+			local.getClientes().add(nuevo);
 			JOptionPane.showMessageDialog(null, "Se ha registrado satisfactoriamente");
 			registroExitoso = true;
 		} else {
@@ -37,22 +33,22 @@ public class Sistema {
 			 * perfumeria.getClientes().add(nuevo); System.out.println("¡Bienvenido!");
 			 * registroExitoso = true; } } }
 			 */
-			for (Cliente cliente : perfumeria.getClientes()) {
-				if (cliente.getNombreDeUsuario().equals(nuevo.getNombreDeUsuario())) {
+			for (Cliente cliente : local.getClientes()) {
+				if (cliente.getUsuarioCliente().getEmail().equals(nuevo.getUsuarioCliente().getEmail())) {
 					errorDeValidacion1++;
 					break;
 				}
 			}
 
-			for (Cliente cliente : perfumeria.getClientes()) {
-				if (cliente.getEmail().equals(nuevo.getEmail())) {
+			for (Cliente cliente : local.getClientes()) {
+				if (cliente.getUsuarioCliente().getEmail().equals(nuevo.getUsuarioCliente().getEmail())) {
 					errorDeValidacion2++;
 					break;
 				}
 			}
 
 			if (errorDeValidacion1 == 0 && errorDeValidacion2 == 0) {
-				perfumeria.getClientes().add(nuevo);
+				local.getClientes().add(nuevo);
 				System.out.println("¡Bienvenido!");
 				registroExitoso = true;
 			} else {
@@ -70,10 +66,10 @@ public class Sistema {
 	}
 
 	public void darseDeBaja(String email) {
-		Iterator it = perfumeria.getClientes().iterator();
+		Iterator it = local.getClientes().iterator();
 		while (it.hasNext()) {
 			Cliente cliente = (Cliente) it.next();
-			if (cliente.getEmail().equals(email)) {
+			if (cliente.getUsuarioCliente().getEmail().equals(email)) {
 				it.remove();
 			}
 		}
@@ -103,5 +99,23 @@ public class Sistema {
 		seleccion = Integer.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
 		return seleccion;
 	}
+
+	public Local getLocal() {
+		return local;
+	}
+
+	public void setLocal(Local local) {
+		this.local = local;
+	}
+
+	public Boolean getSesionAbierta() {
+		return sesionAbierta;
+	}
+
+	public void setSesionAbierta(Boolean sesionAbierta) {
+		this.sesionAbierta = sesionAbierta;
+	}
+	
+	
 
 }
