@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SesionAbiertaException, SesionCerradaException {
 
 		Local miPrograma = new Local();
 		Sistema miSistema = new Sistema(miPrograma);
@@ -34,7 +34,7 @@ public class Main {
 					password = JOptionPane.showInputDialog("Ingrese password");
 					Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password); // null es localDate
 					try {
-						ingresoPermitido = miSistema.registro(nuevo);
+						ingresoPermitido = miSistema.registrarUsuario(nuevo);
 					} catch (UsuarioExistenteException e) {
 						e.printStackTrace();
 					} catch (CorreoExistenteException e) {
