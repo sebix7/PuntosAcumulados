@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
+
 public class Sistema {
 
 	private Local local;
