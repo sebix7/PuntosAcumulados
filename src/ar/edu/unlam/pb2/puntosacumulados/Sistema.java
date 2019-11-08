@@ -1,5 +1,6 @@
 package ar.edu.unlam.pb2.puntosacumulados;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -8,120 +9,91 @@ import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
 public class Sistema {
 
-	private Local local;
+	private String email;
+	private String password;
+	private Integer id;
 	private Boolean sesionAbierta;
-	private Boolean menuPrincipalDisponible;
 
-	public Sistema(Local local) {
-		this.local = local;
+	private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+	private ArrayList<Compra> ventas = new ArrayList<Compra>();
+	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+	private ArrayList<Encargado> encargados = new ArrayList<Encargado>();
+	private ArrayList<Producto> productos = new ArrayList<Producto>();
+
+	// Constructor default
+	public Sistema() {
+
+	}
+
+	// Constructor
+	public Sistema(String email, String password, Integer id, ArrayList<Usuario> listaUsuarios,
+			ArrayList<Compra> ventas, ArrayList<Cliente> clientes, ArrayList<Encargado> encargados,
+			ArrayList<Producto> productos) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.id = id;
+		this.listaUsuarios = listaUsuarios;
+		this.ventas = ventas;
+		this.clientes = clientes;
+		this.encargados = encargados;
+		this.productos = productos;
 		this.sesionAbierta = false;
 	}
 
-	public Boolean registro(Cliente nuevo)
-			throws UsuarioExistenteException, CorreoExistenteException, SesionAbiertaException {
-		Boolean registroExitoso = false;
-		if (this.sesionAbierta == false) {
-			Integer errorDeValidacion1 = 0;
-			Integer errorDeValidacion2 = 0;
-			if (local.getClientes().size() == 0) {
-				local.getClientes().add(nuevo);
-				JOptionPane.showMessageDialog(null, "Se ha registrado satisfactoriamente");
-				registroExitoso = true;
-				this.sesionAbierta = true;
+	// REGISTRO
+	public Boolean registrarUsuario(Usuario usuario) throws CorreoExistenteException, UsuarioExistenteException {
+		Boolean exito = false;
+		for (Usuario usuarioEncontrado : this.listaUsuarios) {
+			if (usuarioEncontrado.getEmail().equals(usuario.getEmail())) {
+				throw new CorreoExistenteException();
+			} else if (usuarioEncontrado.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
+				throw new UsuarioExistenteException();
 			} else {
-				/*
-				 * for (Cliente cliente : perfumeria.getClientes()) { if
-				 * (cliente.getNombreDeUsuario().equals(nuevo.getNombreDeUsuario())) {
-				 * System.out.println("Nombre de usuario ya existente");
-				 * 
-				 * } else { if (cliente.getEmail().equals(nuevo.getEmail())) {
-				 * System.out.println("Ya existe un usuario para ese correo"); } else {
-				 * perfumeria.getClientes().add(nuevo); System.out.println("¡Bienvenido!");
-				 * registroExitoso = true; } } }
-				 */
-				for (Cliente cliente : local.getClientes()) {
-					if (cliente.getUsuarioCliente().getNombreDeUsuario()
-							.equals(nuevo.getUsuarioCliente().getNombreDeUsuario())) {
-						errorDeValidacion1++;
-						break;
-					}
-				}
-
-				for (Cliente cliente : local.getClientes()) {
-					if (cliente.getUsuarioCliente().getEmail().equals(nuevo.getUsuarioCliente().getEmail())) {
-						errorDeValidacion2++;
-						break;
-					}
-				}
-
-				if (errorDeValidacion1 == 0 && errorDeValidacion2 == 0) {
-					local.getClientes().add(nuevo);
-					JOptionPane.showMessageDialog(null, "Se ha registrado satisfactoriamente");
-					registroExitoso = true;
-					this.sesionAbierta = true;
-				} else {
-					if (errorDeValidacion1 == 1) {
-						throw new UsuarioExistenteException();
-					} else {
-						if (errorDeValidacion2 == 1) {
-							throw new CorreoExistenteException();
-						}
-					}
-				}
-
+				this.listaUsuarios.add(usuario);
+				exito = true;
 			}
-		} else {
-			throw new SesionAbiertaException();
 		}
-		return registroExitoso;
+		return exito;
 	}
 
-	public void darseDeBaja(String email) throws SesionCerradaException {
-		if (this.sesionAbierta == true) {
-			Iterator it = local.getClientes().iterator();
-			while (it.hasNext()) {
-				Cliente cliente = (Cliente) it.next();
-				if (cliente.getUsuarioCliente().getEmail().equals(email)) {
-					it.remove();
-				}
+	// ELIMINAR USUARIO
+	public Boolean eliminarUsuario(Integer id) throws IdNoValidoException {
+		Boolean exito = false;
+		Iterator<Usuario> it = this.listaUsuarios.iterator();
+		while (it.hasNext()) {
+			Usuario usuario = it.next();
+			if (usuario.getId().equals(id)) {
+				it.remove();
+				exito = true;
+			}else {
+				throw new IdNoValidoException();
 			}
-		} else {
-			throw new SesionCerradaException();
 		}
+		return exito;
 	}
 
+	// INICIAR SESION
 	public Boolean iniciarSesion(String email, String password)
 			throws DatosDeUsuarioNoValidosException, SesionAbiertaException {
-		if (this.sesionAbierta == false) {
-			if (local.getClientes().size() > 0) {
-				for (Cliente cliente : local.getClientes()) {
-					if (cliente.getUsuarioCliente().getEmail().equals(email)
-							&& cliente.getUsuarioCliente().getPassword().equals(password)) {
-						this.sesionAbierta = true;
-						JOptionPane.showMessageDialog(null, "Bienvenido de nuevo al sistema");
-						break;
-					}
-				}
-			} else {
-				if (local.getClientes().size() == 0) {
+		Boolean exito = false;
+		if (this.sesionAbierta.equals(false)) {
+			for (Usuario usuarioIngresado : this.listaUsuarios) {
+				if (usuarioIngresado.getEmail().equals(email) && usuarioIngresado.getPassword().equals(password)) {
+					exito = true;
+					JOptionPane.showMessageDialog(null, "Bienvenido de nuevo al sistema");
+				} else {
 					throw new DatosDeUsuarioNoValidosException();
 				}
 			}
 		} else {
 			throw new SesionAbiertaException();
 		}
-		return this.sesionAbierta;
+		return exito;
 	}
 
-	public Boolean cerrarSesion() throws SesionCerradaException {
-		if (this.sesionAbierta == true) {
-			JOptionPane.showMessageDialog(null, "Sesión Cerrada");
-			return this.sesionAbierta = false;
-		} else {
-			throw new SesionCerradaException();
-		}
-	}
-
+	
+	//MENU PRINCIPAL - POR AHORA NO FUE MODIFICADO
 	public Integer menuPrincipal() throws OpcionInvalidaException, SesionAbiertaException {
 		if (this.sesionAbierta == false) {
 			Integer seleccion;
@@ -136,7 +108,7 @@ public class Sistema {
 			throw new SesionAbiertaException();
 		}
 	}
-
+	//SUBMENU - POR AHORA NO FUE MODIFICADO
 	public Integer submenu() throws OpcionInvalidaException, SesionCerradaException {
 		if (this.sesionAbierta == true) {
 			Integer seleccion;
@@ -151,21 +123,72 @@ public class Sistema {
 			throw new SesionCerradaException();
 		}
 	}
-
-	public Local getLocal() {
-		return local;
+	
+	
+	
+	// GETTER SETTER
+	public String getEmail() {
+		return email;
 	}
 
-	public void setLocal(Local local) {
-		this.local = local;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public Boolean getSesionAbierta() {
-		return sesionAbierta;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSesionAbierta(Boolean sesionAbierta) {
-		this.sesionAbierta = sesionAbierta;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ArrayList<Usuario> getListaUsuarios() {
+		return listaUsuarios;
+	}
+
+	public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+		this.listaUsuarios = listaUsuarios;
+	}
+
+	public ArrayList<Compra> getVentas() {
+		return ventas;
+	}
+
+	public void setVentas(ArrayList<Compra> ventas) {
+		this.ventas = ventas;
+	}
+
+	public ArrayList<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(ArrayList<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+
+	public ArrayList<Encargado> getEncargados() {
+		return encargados;
+	}
+
+	public void setEncargados(ArrayList<Encargado> encargados) {
+		this.encargados = encargados;
+	}
+
+	public ArrayList<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(ArrayList<Producto> productos) {
+		this.productos = productos;
 	}
 
 }

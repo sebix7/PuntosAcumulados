@@ -1,4 +1,5 @@
 package ar.edu.unlam.pb2.puntosacumulados;
+/*package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.ArrayList;
 
@@ -61,3 +62,4 @@ public class Local {
 		return null;
 	}
 }
+*/
