@@ -6,6 +6,8 @@ import javax.swing.JOptionPane;
 
 import org.junit.Test;
 
+import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -13,12 +15,17 @@ public class Main {
 		Local miPrograma = new Local();
 		Sistema miSistema = new Sistema(miPrograma);
 		String nombre, apellido, nombreDeUsuario, email, password;
-		Integer opcion1, opcion2 = 0;
+		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false;
 
 		Scanner teclado = new Scanner(System.in);
 		do {
-			opcion1 = miSistema.menuPrincipal();
+			try {
+				opcion1 = miSistema.menuPrincipal();
+			} catch (OpcionInvalidaException e) {
+				e.printStackTrace();
+			}
+
 			switch (opcion1) {
 			case 1:
 				do {
@@ -27,11 +34,21 @@ public class Main {
 					nombreDeUsuario = JOptionPane.showInputDialog("Ingrese nombre de usuario");
 					email = JOptionPane.showInputDialog("Ingrese su email");
 					password = JOptionPane.showInputDialog("Ingrese password");
-					Cliente nuevo = new Cliente(nombre, apellido, null); // null es localDate
-					ingresoPermitido = miSistema.registro(nuevo);
+					Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password); // null es localDate
+					try {
+						ingresoPermitido = miSistema.registro(nuevo);
+					} catch (UsuarioExistenteException e) {
+						e.printStackTrace();
+					} catch (CorreoExistenteException e) {
+						e.printStackTrace();
+					}
 				} while (ingresoPermitido == false);
-				
-				opcion2 = miSistema.menuInterno();
+
+				try {
+					opcion2 = miSistema.submenu();
+				} catch (OpcionInvalidaException e1) {
+					e1.printStackTrace();
+				}
 				switch (opcion2) {
 				case 1:
 					miSistema.darseDeBaja(email);
@@ -44,11 +61,16 @@ public class Main {
 				}
 				break;
 			case 2:
+				Boolean aux = true;
+				do {
 				email = JOptionPane.showInputDialog("Ingrese su email");
 				password = JOptionPane.showInputDialog("Ingrese su password");
-				JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
-				//ingresoPermitido = miS.iniciarSesion(email, password); // El metodo iniciarSesion tiene que devolver un
-																		// true
+				try {
+					aux = miSistema.iniciarSesion(email, password);
+				} catch (DatosDeUsuarioNoValidosException e) {
+					e.printStackTrace();
+				}
+				} while (aux == false);
 				break;
 			case 3:
 
@@ -58,7 +80,7 @@ public class Main {
 				System.out.println(miSistema.getLocal().mostrarListaDeClientes());
 				break;
 			}
-		} while (opcion1 == 4 || opcion2 == 1 || opcion2 == 2);
+		} while (opcion1 == 4 || opcion2 == 1 || opcion2 == 2 || opcion1 < 1 || opcion1 > 5);
 
 	}
 
