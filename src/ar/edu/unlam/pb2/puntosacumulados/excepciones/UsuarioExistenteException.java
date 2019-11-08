@@ -1,4 +1,4 @@
-package ar.edu.unlam.pb2.puntosacumulados;
+package ar.edu.unlam.pb2.puntosacumulados.excepciones;
 
 import javax.swing.JOptionPane;
 

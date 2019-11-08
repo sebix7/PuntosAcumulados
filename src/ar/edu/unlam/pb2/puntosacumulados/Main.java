@@ -6,6 +6,8 @@ import javax.swing.JOptionPane;
 
 import org.junit.Test;
 
+import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
+
 public class Main {
 
 	public static void main(String[] args) throws SesionAbiertaException, SesionCerradaException {
