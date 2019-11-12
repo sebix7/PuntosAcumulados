@@ -9,7 +9,8 @@ public class TestPuntosAcumulados {
 
 	@Test
 	public void testOpcionMenuPrincipalCorrecto() {
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local();
+		Sistema miSistema = new Sistema(miLocal);
 		Integer vO = 0;
 
 		try {
@@ -25,7 +26,8 @@ public class TestPuntosAcumulados {
 
 	@Test(expected = OpcionInvalidaException.class)
 	public void testOpcionMenuPrincipalIncorrecto() throws OpcionInvalidaException {
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local();
+		Sistema miSistema = new Sistema(miLocal);
 
 		miSistema.menuPrincipal();
 		// Debe ingresarse un valor menor a 1 o mayor a 5 para que se cumpla lo
@@ -34,7 +36,8 @@ public class TestPuntosAcumulados {
 
 	@Test
 	public void testQueVerificaQueUnClienteFueRegistradoSatisfactoriamente() {
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local();
+		Sistema miSistema = new Sistema(miLocal);
 		String nombre = "Sebastian";
 		String apellido = "Rodriguez";
 		String nombreDeUsuario = "sebix7";
@@ -56,7 +59,8 @@ public class TestPuntosAcumulados {
 	@Test(expected = CorreoExistenteException.class)
 	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnEmailYaExistente()
 			throws CorreoExistenteException, UsuarioExistenteException {
-		Sistema miS = new Sistema();
+		Local miLocal = new Local();
+		Sistema miS = new Sistema(miLocal);
 		String nombre1 = "Sebastian";
 		String apellido1 = "Rodriguez";
 		String nombreDeUsuario1 = "sebix7";
@@ -80,7 +84,8 @@ public class TestPuntosAcumulados {
 	@Test(expected = UsuarioExistenteException.class)
 	public void testQueVerificaQueNoSePuedeRegistrarUnClienteConUnUsuarioYaExistente()
 			throws CorreoExistenteException, UsuarioExistenteException {
-		Sistema miS = new Sistema();
+		Local miLocal = new Local();
+		Sistema miS = new Sistema(miLocal);
 		String nombre1 = "Sebastian";
 		String apellido1 = "Rodriguez";
 		String nombreDeUsuario1 = "sebix7";
@@ -103,7 +108,8 @@ public class TestPuntosAcumulados {
 
 	@Test
 	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteRegistradoOExistente() {
-		Sistema miS = new Sistema();
+		Local miLocal = new Local();
+		Sistema miS = new Sistema(miLocal);
 		String nombre1 = "Sebastian";
 		String apellido1 = "Rodriguez";
 		String nombreDeUsuario1 = "sebix7";
@@ -130,7 +136,8 @@ public class TestPuntosAcumulados {
 	@Test(expected = DatosDeUsuarioNoValidosException.class)
 	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistradoOInexistente()
 			throws DatosDeUsuarioNoValidosException {
-		Sistema miS = new Sistema();
+		Local miLocal = new Local();
+		Sistema miS = new Sistema(miLocal);
 
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";
@@ -141,7 +148,8 @@ public class TestPuntosAcumulados {
 
 	@Test
 	public void testOpcionSubmenuCorrecto() {
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local();
+		Sistema miSistema = new Sistema(miLocal);
 		Integer vO = 0;
 
 		try {
@@ -157,7 +165,8 @@ public class TestPuntosAcumulados {
 
 	@Test(expected = OpcionInvalidaException.class)
 	public void testOpcionSubmenuIncorrecto() throws OpcionInvalidaException {
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local();
+		Sistema miSistema = new Sistema(miLocal);
 
 		miSistema.submenu(); // Debe ingresarse un valor distinto de 1 o 2 para quese cumpla lo esperado.
 	}

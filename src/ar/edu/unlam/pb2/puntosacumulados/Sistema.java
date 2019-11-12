@@ -12,6 +12,7 @@ public class Sistema {
 	private String email;
 	private String password;
 	private Integer id;
+	private Local local;
 
 	private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
 	private ArrayList<Compra> ventas = new ArrayList<Compra>();
@@ -20,15 +21,14 @@ public class Sistema {
 	private ArrayList<Producto> productos = new ArrayList<Producto>();
 
 	// Constructor default
-	public Sistema() {
-
+	public Sistema(Local local) {
+		this.local = local;
 	}
 
 	// Constructor
 	public Sistema(String email, String password, Integer id, ArrayList<Usuario> listaUsuarios,
 			ArrayList<Compra> ventas, ArrayList<Cliente> clientes, ArrayList<Encargado> encargados,
-			ArrayList<Producto> productos) {
-		super();
+			ArrayList<Producto> productos, Local local) {
 		this.email = email;
 		this.password = password;
 		this.id = id;
@@ -37,6 +37,7 @@ public class Sistema {
 		this.clientes = clientes;
 		this.encargados = encargados;
 		this.productos = productos;
+		this.local = local;
 	}
 
 	// REGISTRO

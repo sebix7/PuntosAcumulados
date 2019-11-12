@@ -13,8 +13,8 @@ public class Main {
 	public static void main(String[] args) throws OpcionInvalidaException, UsuarioExistenteException,
 			CorreoExistenteException, DatosDeUsuarioNoValidosException, NombreDeUsuarioNoValidoException, IdNoValidoException {
 
-		Local miPrograma = new Local();
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local();
+		Sistema miSistema = new Sistema(miLocal);
 		String nombre, apellido, nombreDeUsuario, email, password;
 		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false;
