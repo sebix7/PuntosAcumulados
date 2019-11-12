@@ -12,7 +12,7 @@ public class Sistema {
 	private String email;
 	private String password;
 	private Integer id;
-	private Boolean sesionAbierta;
+	private Local local;
 
 	private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
 	private ArrayList<Compra> ventas = new ArrayList<Compra>();
@@ -21,15 +21,14 @@ public class Sistema {
 	private ArrayList<Producto> productos = new ArrayList<Producto>();
 
 	// Constructor default
-	public Sistema() {
-
+	public Sistema(Local local) {
+		this.local = local;
 	}
 
 	// Constructor
 	public Sistema(String email, String password, Integer id, ArrayList<Usuario> listaUsuarios,
 			ArrayList<Compra> ventas, ArrayList<Cliente> clientes, ArrayList<Encargado> encargados,
-			ArrayList<Producto> productos) {
-		super();
+			ArrayList<Producto> productos, Local local) {
 		this.email = email;
 		this.password = password;
 		this.id = id;
@@ -38,21 +37,30 @@ public class Sistema {
 		this.clientes = clientes;
 		this.encargados = encargados;
 		this.productos = productos;
-		this.sesionAbierta = false;
+		this.local = local;
 	}
 
 	// REGISTRO
-	public Boolean registrarUsuario(Usuario usuario) throws CorreoExistenteException, UsuarioExistenteException {
+	public Boolean registrarCliente(Cliente cliente) throws CorreoExistenteException, UsuarioExistenteException {
 		Boolean exito = false;
-		for (Usuario usuarioEncontrado : this.listaUsuarios) {
-			if (usuarioEncontrado.getEmail().equals(usuario.getEmail())) {
-				throw new CorreoExistenteException();
-			} else if (usuarioEncontrado.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
-				throw new UsuarioExistenteException();
-			} else {
-				this.listaUsuarios.add(usuario);
-				exito = true;
+		if (this.listaUsuarios.size() > 0) {
+			for (Usuario usuarioEncontrado : this.listaUsuarios) {
+				if (usuarioEncontrado.getEmail().equals(cliente.getUsuarioCliente().getEmail())) {
+					throw new CorreoExistenteException();
+				} else if (usuarioEncontrado.getNombreDeUsuario()
+						.equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
+					throw new UsuarioExistenteException();
+				} else {
+					this.clientes.add(cliente);
+					this.listaUsuarios.add(cliente.getUsuarioCliente());
+					exito = true;
+					break;
+				}
 			}
+		} else {
+			this.clientes.add(cliente);
+			this.listaUsuarios.add(cliente.getUsuarioCliente());
+			exito = true;
 		}
 		return exito;
 	}
@@ -66,7 +74,7 @@ public class Sistema {
 			if (usuario.getId().equals(id)) {
 				it.remove();
 				exito = true;
-			}else {
+			} else {
 				throw new IdNoValidoException();
 			}
 		}
@@ -74,58 +82,77 @@ public class Sistema {
 	}
 
 	// INICIAR SESION
-	public Boolean iniciarSesion(String email, String password)
-			throws DatosDeUsuarioNoValidosException, SesionAbiertaException {
+	public Boolean iniciarSesion(String email, String password) throws DatosDeUsuarioNoValidosException {
 		Boolean exito = false;
-		if (this.sesionAbierta.equals(false)) {
+
+		if (this.listaUsuarios.size() > 0) {
 			for (Usuario usuarioIngresado : this.listaUsuarios) {
 				if (usuarioIngresado.getEmail().equals(email) && usuarioIngresado.getPassword().equals(password)) {
 					exito = true;
 					JOptionPane.showMessageDialog(null, "Bienvenido de nuevo al sistema");
+					break;
 				} else {
 					throw new DatosDeUsuarioNoValidosException();
 				}
 			}
 		} else {
-			throw new SesionAbiertaException();
+			throw new DatosDeUsuarioNoValidosException();
 		}
 		return exito;
 	}
 
-	
-	//MENU PRINCIPAL - POR AHORA NO FUE MODIFICADO
-	public Integer menuPrincipal() throws OpcionInvalidaException, SesionAbiertaException {
-		if (this.sesionAbierta == false) {
-			Integer seleccion;
-			seleccion = Integer.parseInt(JOptionPane.showInputDialog(
-					"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes \n5. Salir"));
-			if (seleccion >= 1 && seleccion <= 5) {
-				return seleccion;
-			} else {
-				throw new OpcionInvalidaException();
-			}
+	// MENU PRINCIPAL - POR AHORA NO FUE MODIFICADO
+	public Integer menuPrincipal() throws OpcionInvalidaException {
+		Integer seleccion;
+		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
+				"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes \n5. Salir"));
+		if (seleccion >= 1 && seleccion <= 5) {
+			return seleccion;
 		} else {
-			throw new SesionAbiertaException();
+			throw new OpcionInvalidaException();
 		}
 	}
-	//SUBMENU - POR AHORA NO FUE MODIFICADO
-	public Integer submenu() throws OpcionInvalidaException, SesionCerradaException {
-		if (this.sesionAbierta == true) {
-			Integer seleccion;
-			seleccion = Integer
-					.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
-			if (seleccion >= 1 && seleccion <= 2) {
-				return seleccion;
-			} else {
-				throw new OpcionInvalidaException();
-			}
+
+	// SUBMENU - POR AHORA NO FUE MODIFICADO
+	public Integer submenu() throws OpcionInvalidaException {
+		Integer seleccion;
+		seleccion = Integer
+				.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
+		if (seleccion >= 1 && seleccion <= 2) {
+			return seleccion;
 		} else {
-			throw new SesionCerradaException();
+			throw new OpcionInvalidaException();
 		}
 	}
-	
-	
-	
+
+	// RECUPERAR CONTRASEÑA
+	public Boolean recuperarContraseña(String nombreDeUsuario, String password)
+			throws NombreDeUsuarioNoValidoException {
+		Boolean exito = false;
+		if (this.listaUsuarios.size() > 0) {
+			for (Usuario usuario : this.listaUsuarios) {
+				if (usuario.getNombreDeUsuario().equals(nombreDeUsuario)) {
+					usuario.setPassword(password);
+					JOptionPane.showMessageDialog(null,
+							"¡Operacion exitosa! \nUsuario: " + nombreDeUsuario + " \nPassword: " + password);
+					exito = true;
+				} else {
+					throw new NombreDeUsuarioNoValidoException();
+				}
+			}
+		} else {
+			throw new NombreDeUsuarioNoValidoException();
+		}
+		return exito;
+	}
+
+	// MOSTRAR LISTA DE CLIENTES
+	public void mostrarClientes() {
+		for (Cliente cliente : clientes) {
+			System.out.println(cliente.toString());
+		}
+	}
+
 	// GETTER SETTER
 	public String getEmail() {
 		return email;
