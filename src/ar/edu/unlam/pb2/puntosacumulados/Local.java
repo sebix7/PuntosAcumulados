@@ -1,26 +1,15 @@
 package ar.edu.unlam.pb2.puntosacumulados;
-/*package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.ArrayList;
 
 public class Local {
 
-	private String nombreLocal;
 	private ArrayList<Compra> ventas = new ArrayList<Compra>();
 	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	private ArrayList<Encargado> encargados = new ArrayList<Encargado>();
 	private ArrayList<Producto> productos = new ArrayList<Producto>();
 
 	public Local() {
-		this.nombreLocal = nombreLocal;
-	}
-
-	public String getNombreLocal() {
-		return nombreLocal;
-	}
-
-	public void setNombreLocal(String nombreLocal) {
-		this.nombreLocal = nombreLocal;
 	}
 
 	public ArrayList<Compra> getVentas() {
@@ -62,4 +51,3 @@ public class Local {
 		return null;
 	}
 }
-*/
