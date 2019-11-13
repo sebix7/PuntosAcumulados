@@ -11,16 +11,16 @@ import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 public class Main {
 
 	public static void main(String[] args) throws OpcionInvalidaException, UsuarioExistenteException,
-			CorreoExistenteException, DatosDeUsuarioNoValidosException, NombreDeUsuarioNoValidoException, IdNoValidoException {
+			CorreoExistenteException, DatosDeUsuarioNoValidosException, NombreDeUsuarioNoValidoException,
+			IdNoValidoException, SinClientesException, NullException {
 
 		Local miLocal = new Local();
 		Sistema miSistema = new Sistema(miLocal);
-		String nombre, apellido, nombreDeUsuario, email, password;
+		String nombre, apellido, nombreDeUsuario, email, password, email1 = " ", password1 = " ";
 		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false;
 
 		Scanner teclado = new Scanner(System.in);
-
 		do {
 			try {
 				opcion1 = miSistema.menuPrincipal();
@@ -37,27 +37,25 @@ public class Main {
 				password = JOptionPane.showInputDialog("Ingrese password");
 				Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password); // null es
 																										// localDate
-				do {
-					try {
-						ingresoPermitido = miSistema.registrarCliente(nuevo);
-					} catch (UsuarioExistenteException e) {
-						e.printStackTrace();
-					} catch (CorreoExistenteException e) {
-						e.printStackTrace();
-					}
-				} while (ingresoPermitido == false);
+				try {
+					ingresoPermitido = miSistema.registrarCliente(nuevo);
+				} catch (UsuarioExistenteException e) {
+					e.printStackTrace();
+				} catch (CorreoExistenteException e) {
+					e.printStackTrace();
+				} catch (NullException e) {
+					e.printStackTrace();
+				}
 				break;
 
 			case 2:
-				do {
-					email = JOptionPane.showInputDialog("Ingrese su email");
-					password = JOptionPane.showInputDialog("Ingrese su password");
-					try {
-						login = miSistema.iniciarSesion(email, password);
-					} catch (DatosDeUsuarioNoValidosException e) {
-						e.printStackTrace();
-					}
-				} while (login == false);
+				email = JOptionPane.showInputDialog("Ingrese su email");
+				password = JOptionPane.showInputDialog("Ingrese su password");
+				try {
+					login = miSistema.iniciarSesion(email1, password1);
+				} catch (DatosDeUsuarioNoValidosException e) {
+					e.printStackTrace();
+				}
 				break;
 
 			case 3:
@@ -71,10 +69,16 @@ public class Main {
 				break;
 
 			case 4:
-				miSistema.mostrarClientes();
+				try {
+					miSistema.mostrarClientes();
+				} catch (SinClientesException e) {
+					e.printStackTrace();
+				}
 				break;
 
 			case 5:
+				login = null;
+				ingresoPermitido = null;
 				break;
 			}
 
@@ -98,7 +102,8 @@ public class Main {
 				}
 			}
 
-		} while (opcion1 < 1 || opcion1 > 5 || opcion1 == 3 || opcion1 == 4 || opcion2 == 2);
+		} while (opcion1 < 1 || opcion1 > 5 || opcion1 == 3 || opcion1 == 4 || opcion2 == 2 || login == false
+				|| ingresoPermitido == false);
 	}
 
 }

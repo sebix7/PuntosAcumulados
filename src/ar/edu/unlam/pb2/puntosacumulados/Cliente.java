@@ -11,16 +11,14 @@ class Cliente extends Persona {
 		super(nombre, apellido, edad);
 		usuarioCliente = new Usuario(nombreDeUsuario, email, password);
 		this.puntos = 0;
-	}
-
-	
+	}	
 	
 	@Override
 	public void calcularEdad() {
 		// puse este metodo de prueba, habria que elegir uno correcto
 		
 	}
-
+	
 	public Integer getPuntos() {
 		return puntos;
 	}
@@ -35,6 +33,11 @@ class Cliente extends Persona {
 
 	public void setUsuarioCliente(Usuario usuarioCliente) {
 		this.usuarioCliente = usuarioCliente;
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [nombreDeUsuario=" + usuarioCliente.getNombreDeUsuario() + ", puntos=" + puntos + "]";
 	}
 
 }
