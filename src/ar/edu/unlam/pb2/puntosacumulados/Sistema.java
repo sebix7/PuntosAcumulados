@@ -41,9 +41,14 @@ public class Sistema {
 	}
 
 	// REGISTRO
-	public Boolean registrarCliente(Cliente cliente) throws CorreoExistenteException, UsuarioExistenteException {
+	public Boolean registrarCliente(Cliente cliente)
+			throws CorreoExistenteException, UsuarioExistenteException, NullException {
 		Boolean exito = false;
-		if (this.listaUsuarios.size() > 0) {
+		if (cliente.getApellido() == null || cliente.getNombre() == null
+				|| cliente.getUsuarioCliente().getEmail() == null || cliente.getUsuarioCliente().getPassword() == null
+				|| cliente.getUsuarioCliente().getNombreDeUsuario() == null) {
+			throw new NullException();
+		} else if (this.listaUsuarios.size() > 0) {
 			for (Usuario usuarioEncontrado : this.listaUsuarios) {
 				if (usuarioEncontrado.getEmail().equals(cliente.getUsuarioCliente().getEmail())) {
 					throw new CorreoExistenteException();
@@ -147,9 +152,13 @@ public class Sistema {
 	}
 
 	// MOSTRAR LISTA DE CLIENTES
-	public void mostrarClientes() {
-		for (Cliente cliente : clientes) {
-			System.out.println(cliente.toString());
+	public void mostrarClientes() throws SinClientesException {
+		if (clientes.size() > 0) {
+			for (Cliente cliente : clientes) {
+				System.out.println(cliente.toString());
+			}
+		} else {
+			throw new SinClientesException();
 		}
 	}
 
