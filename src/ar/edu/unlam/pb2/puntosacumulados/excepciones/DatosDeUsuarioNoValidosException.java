@@ -5,6 +5,6 @@ import javax.swing.JOptionPane;
 public class DatosDeUsuarioNoValidosException extends Exception {
 
 	public DatosDeUsuarioNoValidosException() {
-		JOptionPane.showMessageDialog(null, "Usuario y/o password inválido.");
+		JOptionPane.showMessageDialog(null, "Nombre de usuario y/o password inválido.");
 	}
 }
