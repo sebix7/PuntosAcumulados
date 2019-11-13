@@ -3,22 +3,23 @@ package ar.edu.unlam.pb2.puntosacumulados;
 import java.time.LocalDate;
 
 class Cliente extends Persona {
-	
+
 	private Usuario usuarioCliente;
 	private Integer puntos;
 
-	public Cliente(String nombre, String apellido, LocalDate edad, String nombreDeUsuario, String email, String password) {
+	public Cliente(String nombre, String apellido, LocalDate edad, String nombreDeUsuario, String email,
+			String password) {
 		super(nombre, apellido, edad);
 		usuarioCliente = new Usuario(nombreDeUsuario, email, password);
 		this.puntos = 0;
-	}	
-	
+	}
+
 	@Override
 	public void calcularEdad() {
 		// puse este metodo de prueba, habria que elegir uno correcto
-		
+
 	}
-	
+
 	public Integer getPuntos() {
 		return puntos;
 	}
@@ -37,7 +38,10 @@ class Cliente extends Persona {
 
 	@Override
 	public String toString() {
-		return "Cliente [nombreDeUsuario=" + usuarioCliente.getNombreDeUsuario() + ", puntos=" + puntos + "]";
+		return "Cliente [nombre=" + this.getNombre() + ", apellido=" + this.getApellido() + ", edad=" + this.getEdad()
+				+ ", nombreDeUsuario=" + this.getUsuarioCliente().getNombreDeUsuario() + ", email="
+				+ this.getUsuarioCliente().getEmail() + ", password=" + this.getUsuarioCliente().getPassword()
+				+ ", puntos=" + this.getPuntos() + "]";
 	}
 
 }

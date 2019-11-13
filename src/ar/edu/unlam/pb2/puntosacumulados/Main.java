@@ -14,9 +14,8 @@ public class Main {
 			CorreoExistenteException, DatosDeUsuarioNoValidosException, NombreDeUsuarioNoValidoException,
 			IdNoValidoException, SinClientesException, NullException {
 
-		Local miLocal = new Local();
-		Sistema miSistema = new Sistema(miLocal);
-		String nombre, apellido, nombreDeUsuario, email, password, email1 = " ", password1 = " ";
+		Sistema miSistema = Sistema.getInstancia();
+		String nombre, apellido, nombreDeUsuario = null, email = null, password;
 		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false;
 
@@ -49,10 +48,10 @@ public class Main {
 				break;
 
 			case 2:
-				email = JOptionPane.showInputDialog("Ingrese su email");
+				nombreDeUsuario = JOptionPane.showInputDialog("Ingrese su nombre de usuario");
 				password = JOptionPane.showInputDialog("Ingrese su password");
 				try {
-					login = miSistema.iniciarSesion(email1, password1);
+					login = miSistema.iniciarSesion(nombreDeUsuario, password);
 				} catch (DatosDeUsuarioNoValidosException e) {
 					e.printStackTrace();
 				}
@@ -90,19 +89,28 @@ public class Main {
 				}
 				switch (opcion2) {
 				case 1:
+					break;
+
+				case 2:
+					break;
+
+				case 3:
 					try {
-						miSistema.eliminarUsuario(1);
+						miSistema.eliminarUsuario(email);
 					} catch (IdNoValidoException e1) {
 						e1.printStackTrace();
 					}
 					break;
-				case 2:
+
+				case 4:
 					ingresoPermitido = false;
+					login = false;
 					break;
+
 				}
 			}
 
-		} while (opcion1 < 1 || opcion1 > 5 || opcion1 == 3 || opcion1 == 4 || opcion2 == 2 || login == false
+		} while (opcion1 < 1 || opcion1 > 5 || opcion1 == 3 || opcion1 == 4 || opcion2 == 3 || login == false
 				|| ingresoPermitido == false);
 	}
 

@@ -9,10 +9,8 @@ import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
 public class Sistema {
 
-	private String email;
-	private String password;
-	private Integer id;
-	private Local local;
+	private static Sistema instancia;
+	private Usuario usuarioLogueado;
 
 	private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
 	private ArrayList<Compra> ventas = new ArrayList<Compra>();
@@ -21,23 +19,7 @@ public class Sistema {
 	private ArrayList<Producto> productos = new ArrayList<Producto>();
 
 	// Constructor default
-	public Sistema(Local local) {
-		this.local = local;
-	}
-
-	// Constructor
-	public Sistema(String email, String password, Integer id, ArrayList<Usuario> listaUsuarios,
-			ArrayList<Compra> ventas, ArrayList<Cliente> clientes, ArrayList<Encargado> encargados,
-			ArrayList<Producto> productos, Local local) {
-		this.email = email;
-		this.password = password;
-		this.id = id;
-		this.listaUsuarios = listaUsuarios;
-		this.ventas = ventas;
-		this.clientes = clientes;
-		this.encargados = encargados;
-		this.productos = productos;
-		this.local = local;
+	public Sistema() {
 	}
 
 	// REGISTRO
@@ -71,12 +53,12 @@ public class Sistema {
 	}
 
 	// ELIMINAR USUARIO
-	public Boolean eliminarUsuario(Integer id) throws IdNoValidoException {
+	public Boolean eliminarUsuario(String email) throws IdNoValidoException {
 		Boolean exito = false;
-		Iterator<Usuario> it = this.listaUsuarios.iterator();
+		Iterator<Cliente> it = this.clientes.iterator();
 		while (it.hasNext()) {
-			Usuario usuario = it.next();
-			if (usuario.getId().equals(id)) {
+			Cliente cliente = it.next();
+			if (cliente.getUsuarioCliente().getEmail().equals(email)) {
 				it.remove();
 				exito = true;
 			} else {
@@ -87,20 +69,20 @@ public class Sistema {
 	}
 
 	// INICIAR SESION
-	public Boolean iniciarSesion(String email, String password) throws DatosDeUsuarioNoValidosException {
+	public Boolean iniciarSesion(String nombreDeUsuario, String password) throws DatosDeUsuarioNoValidosException {
 		Boolean exito = false;
-
 		if (this.listaUsuarios.size() > 0) {
 			for (Usuario usuarioIngresado : this.listaUsuarios) {
-				if (usuarioIngresado.getEmail().equals(email) && usuarioIngresado.getPassword().equals(password)) {
+				if (usuarioIngresado.getNombreDeUsuario().equals(nombreDeUsuario)
+						&& usuarioIngresado.getPassword().equals(password)) {
 					exito = true;
 					JOptionPane.showMessageDialog(null, "Bienvenido de nuevo al sistema");
 					break;
-				} else {
-					throw new DatosDeUsuarioNoValidosException();
 				}
 			}
-		} else {
+		}
+		
+		if (exito == false) {
 			throw new DatosDeUsuarioNoValidosException();
 		}
 		return exito;
@@ -121,9 +103,9 @@ public class Sistema {
 	// SUBMENU - POR AHORA NO FUE MODIFICADO
 	public Integer submenu() throws OpcionInvalidaException {
 		Integer seleccion;
-		seleccion = Integer
-				.parseInt(JOptionPane.showInputDialog("¿Qué desea hacer? \n1. Darse de Baja \n2. Cerrar Sesion"));
-		if (seleccion >= 1 && seleccion <= 2) {
+		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
+				"¿Qué desea hacer? \n1. Realizar una compra \n2. Ver Perfil \n3. Darse de Baja \n4. Cerrar Sesion"));
+		if (seleccion >= 1 && seleccion <= 4) {
 			return seleccion;
 		} else {
 			throw new OpcionInvalidaException();
@@ -141,11 +123,11 @@ public class Sistema {
 					JOptionPane.showMessageDialog(null,
 							"¡Operacion exitosa! \nUsuario: " + nombreDeUsuario + " \nPassword: " + password);
 					exito = true;
-				} else {
-					throw new NombreDeUsuarioNoValidoException();
 				}
 			}
-		} else {
+		}
+
+		if (exito == false) {
 			throw new NombreDeUsuarioNoValidoException();
 		}
 		return exito;
@@ -163,29 +145,6 @@ public class Sistema {
 	}
 
 	// GETTER SETTER
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public ArrayList<Usuario> getListaUsuarios() {
 		return listaUsuarios;
@@ -225,6 +184,14 @@ public class Sistema {
 
 	public void setProductos(ArrayList<Producto> productos) {
 		this.productos = productos;
+	}
+	
+
+	public static Sistema getInstancia() {
+		if (instancia == null) {
+			instancia = new Sistema();
+		}
+		return instancia;
 	}
 
 }
