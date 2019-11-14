@@ -53,7 +53,7 @@ public class Sistema {
 	}
 
 	// ELIMINAR USUARIO
-	public Boolean eliminarUsuario(String email) throws IdNoValidoException {
+	public Boolean eliminarUsuario(String email) {
 		Boolean exito = false;
 		Iterator<Cliente> it = this.clientes.iterator();
 		while (it.hasNext()) {
@@ -61,8 +61,6 @@ public class Sistema {
 			if (cliente.getUsuarioCliente().getEmail().equals(email)) {
 				it.remove();
 				exito = true;
-			} else {
-				throw new IdNoValidoException();
 			}
 		}
 		return exito;

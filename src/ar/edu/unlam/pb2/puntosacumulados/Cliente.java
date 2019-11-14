@@ -7,18 +7,13 @@ class Cliente extends Persona {
 	private Usuario usuarioCliente;
 	private Integer puntos;
 
-	public Cliente(String nombre, String apellido, LocalDate edad, String nombreDeUsuario, String email,
+	public Cliente(String nombre, String apellido, Integer edad, String nombreDeUsuario, String email,
 			String password) {
 		super(nombre, apellido, edad);
 		usuarioCliente = new Usuario(nombreDeUsuario, email, password);
 		this.puntos = 0;
 	}
 
-	@Override
-	public void calcularEdad() {
-		// puse este metodo de prueba, habria que elegir uno correcto
-
-	}
 
 	public Integer getPuntos() {
 		return puntos;

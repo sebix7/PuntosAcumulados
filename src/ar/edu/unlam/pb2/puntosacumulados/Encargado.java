@@ -6,7 +6,7 @@ public class Encargado extends Persona {
 	
 	private Usuario usuarioEncargado;
 
-	public Encargado(String nombre, String apellido, LocalDate edad) {
+	public Encargado(String nombre, String apellido, Integer edad) {
 		super(nombre, apellido, edad);
 		this.usuarioEncargado = usuarioEncargado;
 	}
@@ -19,10 +19,5 @@ public class Encargado extends Persona {
 		this.usuarioEncargado = usuarioEncargado;
 	}
 
-	@Override
-	public void calcularEdad() {
-		// puse este metodo de prueba, habria que elegir uno correcto
-
-	}
 
 }

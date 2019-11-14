@@ -95,11 +95,7 @@ public class Main {
 					break;
 
 				case 3:
-					try {
-						miSistema.eliminarUsuario(email);
-					} catch (IdNoValidoException e1) {
-						e1.printStackTrace();
-					}
+					miSistema.eliminarUsuario(email);
 					break;
 
 				case 4:

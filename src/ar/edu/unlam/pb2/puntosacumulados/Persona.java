@@ -2,20 +2,18 @@ package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.time.LocalDate;
 
-public abstract class Persona {
+public class Persona {
 	
 	private String nombre;
 	private String apellido;
-	private LocalDate edad;
+	private Integer edad;
 
-	public Persona(String nombre, String apellido, LocalDate edad) {
+	public Persona(String nombre, String apellido, Integer edad) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.edad = edad;
 	}
 	
-	public abstract void calcularEdad(); // puse este metodo de prueba, habria que elegir uno correcto
-
 	public String getNombre() {
 		return nombre;
 	}
@@ -32,11 +30,11 @@ public abstract class Persona {
 		this.apellido = apellido;
 	}
 
-	public LocalDate getEdad() {
+	public Integer getEdad() {
 		return edad;
 	}
 
-	public void setEdad(LocalDate edad) {
+	public void setEdad(Integer edad) {
 		this.edad = edad;
 	}
 
