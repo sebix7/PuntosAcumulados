@@ -6,11 +6,13 @@ public class Usuario {
 	private String nombreDeUsuario;
 	private String email;
 	private String password;
+	private Double saldo;
 
-	public Usuario(String nombreDeUsuario, String email, String password) {
+	public Usuario(String nombreDeUsuario, String email, String password,Double saldo) {
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.email = email;
 		this.password = password;
+		this.saldo = saldo;
 	}
 
 	public String getNombreDeUsuario() {
@@ -44,6 +46,16 @@ public class Usuario {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	public Double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+	
+	
 	
 	
 

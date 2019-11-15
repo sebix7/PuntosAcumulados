@@ -43,7 +43,8 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario = "sebix7";
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";
-		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password);
+		Double saldo= 0.0;
+		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password,saldo);
 
 		try {
 			Assert.assertTrue(miSistema.registrarCliente(nuevo));
@@ -66,13 +67,15 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario1 = "sebix7";
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
+		Double saldo1 = 0.0;
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1);
 		String nombre2 = "Mauro";
 		String apellido2 = "Perrone";
 		String nombreDeUsuario2 = "mantonella";
 		String email2 = "sebeatport@gmail.com";
 		String password2 = "iloverubius";
-		Cliente nuevo2 = new Cliente(nombre2, apellido2, null, nombreDeUsuario2, email2, password2);
+		Double saldo2 = 0.0;
+		Cliente nuevo2 = new Cliente(nombre2, apellido2, null, nombreDeUsuario2, email2, password2,saldo2);
 
 		miS.registrarCliente(nuevo1);
 
@@ -91,13 +94,16 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario1 = "sebix7";
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
+		Double saldo1 = 0.0;
+	
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1);
 		String nombre3 = "Rodrigo";
 		String apellido3 = "Acosta";
 		String nombreDeUsuario3 = "sebix7";
 		String email3 = "elrodri@gmail.com";
 		String password3 = "Dioxis";
-		Cliente nuevo3 = new Cliente(nombre3, apellido3, null, nombreDeUsuario3, email3, password3);
+		Double saldo2 = 0.0;
+		Cliente nuevo3 = new Cliente(nombre3, apellido3, null, nombreDeUsuario3, email3, password3,saldo2);
 
 		miS.registrarCliente(nuevo1);
 
@@ -115,7 +121,8 @@ public class TestPuntosAcumulados {
 		String nombreDeUsuario1 = "sebix7";
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1);
+		Double saldo1 = 0.0;
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1);
 
 		try {
 			miS.registrarCliente(nuevo1);
