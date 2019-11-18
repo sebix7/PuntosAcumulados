@@ -16,20 +16,20 @@ public class Sistema {
 	private Compra compra;
 	private Producto producto;
 	private Cliente cliente;
+	private FormaPago formaPago;
+	private Integer cantidadPuntos;
 	private List<Usuario> listaUsuarios = new ArrayList<>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private List<Encargado> encargados = new ArrayList<Encargado>();
 	private List<Producto> productos = new ArrayList<Producto>();
 	private List<Integer> numeroCompra = new LinkedList<Integer>();
-	
+
 	// Constructor default
 	public Sistema() {
 		this.compra = new Compra(producto);
 		this.cliente = new Cliente(null, null, null, null, null, null, null);
 	}
-	
-	
 
 	// REGISTRO
 	public Boolean registrarCliente(Cliente cliente)
@@ -88,7 +88,7 @@ public class Sistema {
 				}
 			}
 		}
-		
+
 		if (exito == false) {
 			throw new DatosDeUsuarioNoValidosException();
 		}
@@ -100,7 +100,7 @@ public class Sistema {
 		Integer seleccion;
 		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
 				"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes \n5. Salir"));
-		if (seleccion >= 1 && seleccion <= 5) {
+		if (seleccion >= 1 && seleccion <= 6) {
 			return seleccion;
 		} else {
 			throw new OpcionInvalidaException();
@@ -150,35 +150,52 @@ public class Sistema {
 			throw new SinClientesException();
 		}
 	}
-	//CREAR NUMERO DE ORDEN
+
+	// CREAR NUMERO DE ORDEN
 	public Integer generarNumeroCompra() {
 		numeroCompra.add(0);
 		return numeroCompra.size();
 	}
-	
-	//NUEVA COMPRA
-	
-	public void nuevaCompra(Usuario usuario ,Producto producto) throws NombreDeUsuarioNoValidoException {
-		int cantidadPuntos=0;
-		for(Usuario i: listaUsuarios) {
-			if(i.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
-				this.compra.setNroCompra(generarNumeroCompra());
-				this.productos.add(producto);
-				this.compra.setCantidadPuntos(producto.getValorEnPuntos());
-				compras.add(this.compra);
-				//recorro la lista de compras y acumulo los puntos.
-				for(Compra c: compras) {
-					cantidadPuntos = cantidadPuntos+ c.getCantidadPuntos();
+
+	// NUEVA COMPRA
+
+	public void nuevaCompra(Usuario usuario, Producto producto, Integer formaPago) throws NombreDeUsuarioNoValidoException, SaldoInsuficienteException {
+		int cantidadPuntos = 0;
+		for (Usuario i : listaUsuarios) {
+			if (i.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
+				if(usuario.getSaldo()>producto.getPrecio()) {
+					this.compra.setNroCompra(generarNumeroCompra());
+					this.productos.add(producto);
+					this.compra.setCantidadPuntos(producto.getValorEnPuntos());
+					compras.add(this.compra);
+				}else {
+					throw new SaldoInsuficienteException();
+				}
+				
+				// recorro la lista de compras y acumulo los puntos.
+				for (Compra c : compras) {
+					cantidadPuntos = cantidadPuntos + c.getCantidadPuntos();
 					this.cliente.setPuntos(cantidadPuntos);
 				}
 			} else {
 				throw new NombreDeUsuarioNoValidoException();
 			}
 		}
-		
+
 	}
+
 	
-	
+
+	public void verPerfilUsuario(Cliente cliente) {
+		for (Cliente c : clientes) {
+			if (c.getUsuarioCliente().getNombreDeUsuario().equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
+				JOptionPane.showMessageDialog(null,
+						"Nombre: " + c.getNombre() + "\nApellido: " + c.getApellido() + "\nUsuario: "
+								+ c.getUsuarioCliente().getNombreDeUsuario() + "\nTotal puntos: " + c.getPuntos()
+								+ "\nTotal saldo: $" + c.getUsuarioCliente().getSaldo());
+			}
+		}
+	}
 
 	// GETTER SETTER
 
@@ -221,73 +238,46 @@ public class Sistema {
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
 	}
-	
-	
-
 
 	public List<Integer> getNumeroCompra() {
 		return numeroCompra;
 	}
 
-
-
 	public void setNumeroCompra(List<Integer> numeroCompra) {
 		this.numeroCompra = numeroCompra;
 	}
-	
-	
-	
-	
-
-
 
 	public Usuario getUsuarioLogueado() {
 		return usuarioLogueado;
 	}
 
-
-
 	public void setUsuarioLogueado(Usuario usuarioLogueado) {
 		this.usuarioLogueado = usuarioLogueado;
 	}
-
-
 
 	public Compra getCompra() {
 		return compra;
 	}
 
-
-
 	public void setCompra(Compra compra) {
 		this.compra = compra;
 	}
-
-
 
 	public Producto getProducto() {
 		return producto;
 	}
 
-
-
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
-
-
 
 	public Cliente getCliente() {
 		return cliente;
 	}
 
-
-
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-
 
 	public static Sistema getInstancia() {
 		if (instancia == null) {

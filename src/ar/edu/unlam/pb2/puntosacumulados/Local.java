@@ -1,53 +1,33 @@
 package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Local {
-
-	private ArrayList<Compra> ventas = new ArrayList<Compra>();
-	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-	private ArrayList<Encargado> encargados = new ArrayList<Encargado>();
-	private ArrayList<Producto> productos = new ArrayList<Producto>();
-
-	public Local() {
+	private String nombreLocal;
+	private List<Producto> productosDisponiblesParaComprar = new ArrayList<Producto>();
+	
+	public Local(String nombreLocal) {
+		this.nombreLocal = nombreLocal;
 	}
 
-	public ArrayList<Compra> getVentas() {
-		return ventas;
+	public List<Producto> getProductosDisponiblesParaComprar() {
+		return productosDisponiblesParaComprar;
 	}
 
-	public void setVentas(ArrayList<Compra> ventas) {
-		this.ventas = ventas;
+	public void setProductosDisponiblesParaComprar(List<Producto> productosDisponiblesParaComprar) {
+		this.productosDisponiblesParaComprar = productosDisponiblesParaComprar;
 	}
 
-	public ArrayList<Cliente> getClientes() {
-		return clientes;
+	public String getNombreLocal() {
+		return nombreLocal;
 	}
 
-	public void setClientes(ArrayList<Cliente> clientes) {
-		this.clientes = clientes;
+	public void setNombreLocal(String nombreLocal) {
+		this.nombreLocal = nombreLocal;
 	}
+	
+	
 
-	public ArrayList<Encargado> getEncargados() {
-		return encargados;
-	}
 
-	public void setEncargados(ArrayList<Encargado> encargados) {
-		this.encargados = encargados;
-	}
-
-	public ArrayList<Producto> getProductos() {
-		return productos;
-	}
-
-	public void setProductos(ArrayList<Producto> productos) {
-		this.productos = productos;
-	}
-
-	public String mostrarListaDeClientes() {
-		for (Cliente cliente : clientes) {
-			return cliente.toString();
-		}
-		return null;
-	}
 }

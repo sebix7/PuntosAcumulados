@@ -10,13 +10,14 @@ public class Usuario {
 
 	public Usuario(String nombreDeUsuario) {
 		this.nombreDeUsuario = nombreDeUsuario;
+		this.saldo = 10000.0;
 	}
 	
-	public Usuario(String nombreDeUsuario, String email, String password,Double saldo) {
+	public Usuario(String nombreDeUsuario, String email, String password) {
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.email = email;
 		this.password = password;
-		this.saldo = saldo;
+		this.saldo = 10000.0;
 	}
 
 	public String getNombreDeUsuario() {

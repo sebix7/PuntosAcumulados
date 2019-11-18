@@ -1,23 +1,22 @@
 package ar.edu.unlam.pb2.puntosacumulados;
 
+import static org.junit.Assert.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
+import ar.edu.unlam.pb2.puntosacumulados.excepciones.OpcionInvalidaException;
 
-public class TestPuntosAcumulados {
-
-
-
+public class TestMenuPrincipal {
 
 	@Test
-	public void testOpcionSubmenuCorrecto() {
+	public void testOpcionMenuPrincipalCorrecto() {
 		Local miLocal = new Local("Pizzeria Los hijos de puta");
 		Sistema miSistema = new Sistema();
 		Integer vO = 0;
 
 		try {
-			vO = miSistema.submenu();
+			vO = miSistema.menuPrincipal();
 		} catch (OpcionInvalidaException e) {
 			e.printStackTrace();
 		}
@@ -26,13 +25,15 @@ public class TestPuntosAcumulados {
 		Assert.assertEquals(vO, vE);
 
 	}
-
+	
 	@Test(expected = OpcionInvalidaException.class)
-	public void testOpcionSubmenuIncorrecto() throws OpcionInvalidaException {
+	public void testOpcionMenuPrincipalIncorrecto() throws OpcionInvalidaException {
 		Local miLocal = new Local("Pizzeria Los hijos de puta");
 		Sistema miSistema = new Sistema();
 
-		miSistema.submenu(); // Debe ingresarse un valor distinto de 1 o 2 para quese cumpla lo esperado.
+		miSistema.menuPrincipal();
+		// Debe ingresarse un valor menor a 1 o mayor a 5 para que se cumpla lo
+		// esperado.
 	}
 
 }

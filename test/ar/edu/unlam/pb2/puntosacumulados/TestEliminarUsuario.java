@@ -7,7 +7,7 @@ import org.junit.Test;
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.CorreoExistenteException;
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.UsuarioExistenteException;
 
-public class testEliminarUsuario {
+public class TestEliminarUsuario {
 
 	@Test
 	public void testEliminarUsuario() throws CorreoExistenteException, UsuarioExistenteException, NullException {
