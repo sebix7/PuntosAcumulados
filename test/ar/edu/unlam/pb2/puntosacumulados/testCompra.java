@@ -9,15 +9,28 @@ public class testCompra {
 	@Test
 	public void testGeneradorDeNumeroDeOrdenSumaUnoEnCadaCompra() {
 		Sistema miSistema = new Sistema();
-		Producto miProducto = new Producto("Perfume Menemista",750.0,201,15000);
-		Compra miCompra = new Compra(miProducto);
-		Compra miCompra2 = new Compra(miProducto);
+		Producto miProducto = new Producto(101,"Perfume Menemista",1750.0);
+		Usuario miUsuario = new Usuario("Dioxis");
+		miSistema.getListaUsuarios().add(miUsuario);
+		miSistema.nuevaCompra(miUsuario, miProducto);
+		miSistema.nuevaCompra(miUsuario, miProducto);
+		miSistema.nuevaCompra(miUsuario, miProducto);
+		miSistema.nuevaCompra(miUsuario, miProducto);
 		
-		miSistema.nuevaCompra(miCompra);
-		miSistema.nuevaCompra(miCompra2);
+		assertEquals(4, miSistema.getNumeroCompra().size());
+	}
+	
+	@Test
+	public void testAcumularPuntosEnCadaCompra() {
+		Sistema miSistema = new Sistema();
+		Producto miProducto = new Producto(101,"Perfume Menemista",1750.0);
+		Usuario miUsuario = new Usuario("Dioxis");
+		Cliente miCliente = new Cliente("Nombre","Apellido",20, "Dioxis","email","pass", 8000.0);
+		miSistema.nuevaCompra(miUsuario, miProducto);
+		miSistema.nuevaCompra(miUsuario, miProducto);
 		
+		assertEquals(350000, miCliente.getPuntos(),0.01);
 		
-		assertEquals(2, miSistema.getNumeroCompra().size());
 	}
 
 }

@@ -13,9 +13,11 @@ public class Sistema {
 
 	private static Sistema instancia;
 	private Usuario usuarioLogueado;
-
+	private Compra compra;
+	private Producto producto;
+	
 	private List<Usuario> listaUsuarios = new ArrayList<>();
-	private List<Compra> ventas = new ArrayList<Compra>();
+	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private List<Encargado> encargados = new ArrayList<Encargado>();
 	private List<Producto> productos = new ArrayList<Producto>();
@@ -23,6 +25,7 @@ public class Sistema {
 	
 	// Constructor default
 	public Sistema() {
+		this.compra = new Compra(producto);
 	}
 	
 	
@@ -148,15 +151,26 @@ public class Sistema {
 	}
 	//CREAR NUMERO DE ORDEN
 	public Integer generarNumeroCompra() {
-		numeroCompra.add(1);
+		numeroCompra.add(0);
 		return numeroCompra.size();
 	}
 	
 	//NUEVA COMPRA
 	
-	public void nuevaCompra(Compra compra) {
-		compra.setNroCompra(generarNumeroCompra());
-		productos.add(compra.getProducto());
+	public void nuevaCompra(Usuario usuario ,Producto producto) {
+		int cantidadPuntos=0;
+		for(Usuario i: listaUsuarios) {
+			if(i.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
+				this.compra.setNroCompra(generarNumeroCompra());
+				productos.add(producto);
+				compras.add(compra);
+				//acumular puntos en cada compra y setearlo al cliente
+				for(Compra c: compras) {
+					cantidadPuntos += c.getProducto().getValorEnPuntos();
+					cliente.setPuntos(cantidadPuntos);
+				}
+			}
+		}
 		
 	}
 	
@@ -173,11 +187,11 @@ public class Sistema {
 	}
 
 	public List<Compra> getVentas() {
-		return ventas;
+		return compras;
 	}
 
 	public void setVentas(List<Compra> ventas) {
-		this.ventas = ventas;
+		this.compras = ventas;
 	}
 
 	public List<Cliente> getClientes() {

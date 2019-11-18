@@ -8,6 +8,10 @@ public class Usuario {
 	private String password;
 	private Double saldo;
 
+	public Usuario(String nombreDeUsuario) {
+		this.nombreDeUsuario = nombreDeUsuario;
+	}
+	
 	public Usuario(String nombreDeUsuario, String email, String password,Double saldo) {
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.email = email;
