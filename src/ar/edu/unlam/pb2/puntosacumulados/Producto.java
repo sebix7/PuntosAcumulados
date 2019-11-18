@@ -5,13 +5,13 @@ public class Producto {
 	private Integer idProducto;
 	private String descripcion;
 	private Double precio;
-	private Integer valorEnPuntos;
+	private Integer valorEnPuntos; // es el precio por 10, genera cantidad de puntos en base al precio.
 
 	public Producto(Integer idProducto, String descripcion, Double precio) {
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.idProducto = idProducto;
-		this.valorEnPuntos = (int) (precio * 100);
+		this.valorEnPuntos = (int) (precio * 10);
 	}
 
 	public String getDescripcion() {

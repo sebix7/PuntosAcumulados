@@ -15,7 +15,7 @@ public class Sistema {
 	private Usuario usuarioLogueado;
 	private Compra compra;
 	private Producto producto;
-	
+	private Cliente cliente;
 	private List<Usuario> listaUsuarios = new ArrayList<>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Cliente> clientes = new ArrayList<Cliente>();
@@ -26,6 +26,7 @@ public class Sistema {
 	// Constructor default
 	public Sistema() {
 		this.compra = new Compra(producto);
+		this.cliente = new Cliente(null, null, null, null, null, null, null);
 	}
 	
 	
@@ -157,18 +158,21 @@ public class Sistema {
 	
 	//NUEVA COMPRA
 	
-	public void nuevaCompra(Usuario usuario ,Producto producto) {
+	public void nuevaCompra(Usuario usuario ,Producto producto) throws NombreDeUsuarioNoValidoException {
 		int cantidadPuntos=0;
 		for(Usuario i: listaUsuarios) {
 			if(i.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
 				this.compra.setNroCompra(generarNumeroCompra());
-				productos.add(producto);
-				compras.add(compra);
-				//acumular puntos en cada compra y setearlo al cliente
+				this.productos.add(producto);
+				this.compra.setCantidadPuntos(producto.getValorEnPuntos());
+				compras.add(this.compra);
+				//recorro la lista de compras y acumulo los puntos.
 				for(Compra c: compras) {
-					cantidadPuntos += c.getProducto().getValorEnPuntos();
-					cliente.setPuntos(cantidadPuntos);
+					cantidadPuntos = cantidadPuntos+ c.getCantidadPuntos();
+					this.cliente.setPuntos(cantidadPuntos);
 				}
+			} else {
+				throw new NombreDeUsuarioNoValidoException();
 			}
 		}
 		
@@ -186,11 +190,11 @@ public class Sistema {
 		this.listaUsuarios = listaUsuarios;
 	}
 
-	public List<Compra> getVentas() {
+	public List<Compra> getCompras() {
 		return compras;
 	}
 
-	public void setVentas(List<Compra> ventas) {
+	public void setCompras(List<Compra> ventas) {
 		this.compras = ventas;
 	}
 
@@ -229,6 +233,58 @@ public class Sistema {
 
 	public void setNumeroCompra(List<Integer> numeroCompra) {
 		this.numeroCompra = numeroCompra;
+	}
+	
+	
+	
+	
+
+
+
+	public Usuario getUsuarioLogueado() {
+		return usuarioLogueado;
+	}
+
+
+
+	public void setUsuarioLogueado(Usuario usuarioLogueado) {
+		this.usuarioLogueado = usuarioLogueado;
+	}
+
+
+
+	public Compra getCompra() {
+		return compra;
+	}
+
+
+
+	public void setCompra(Compra compra) {
+		this.compra = compra;
+	}
+
+
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 

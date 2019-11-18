@@ -9,8 +9,6 @@ public class Compra {
 	
 	public Compra(Producto producto) {
 		super();
-		this.nroCompra = 0;
-		this.cantidadPuntos = 0;
 		this.producto = producto;
 	}
 
