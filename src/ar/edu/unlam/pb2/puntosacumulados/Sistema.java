@@ -2,6 +2,8 @@ package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -11,16 +13,22 @@ public class Sistema {
 
 	private static Sistema instancia;
 	private Usuario usuarioLogueado;
-
-	private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-	private ArrayList<Compra> ventas = new ArrayList<Compra>();
-	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-	private ArrayList<Encargado> encargados = new ArrayList<Encargado>();
-	private ArrayList<Producto> productos = new ArrayList<Producto>();
-
+	private Compra compra;
+	private Producto producto;
+	
+	private List<Usuario> listaUsuarios = new ArrayList<>();
+	private List<Compra> compras = new ArrayList<Compra>();
+	private List<Cliente> clientes = new ArrayList<Cliente>();
+	private List<Encargado> encargados = new ArrayList<Encargado>();
+	private List<Producto> productos = new ArrayList<Producto>();
+	private List<Integer> numeroCompra = new LinkedList<Integer>();
+	
 	// Constructor default
 	public Sistema() {
+		this.compra = new Compra(producto);
 	}
+	
+	
 
 	// REGISTRO
 	public Boolean registrarCliente(Cliente cliente)
@@ -141,49 +149,89 @@ public class Sistema {
 			throw new SinClientesException();
 		}
 	}
+	//CREAR NUMERO DE ORDEN
+	public Integer generarNumeroCompra() {
+		numeroCompra.add(0);
+		return numeroCompra.size();
+	}
+	
+	//NUEVA COMPRA
+	
+	public void nuevaCompra(Usuario usuario ,Producto producto) {
+		int cantidadPuntos=0;
+		for(Usuario i: listaUsuarios) {
+			if(i.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
+				this.compra.setNroCompra(generarNumeroCompra());
+				productos.add(producto);
+				compras.add(compra);
+				//acumular puntos en cada compra y setearlo al cliente
+				for(Compra c: compras) {
+					cantidadPuntos += c.getProducto().getValorEnPuntos();
+					cliente.setPuntos(cantidadPuntos);
+				}
+			}
+		}
+		
+	}
+	
+	
 
 	// GETTER SETTER
 
-	public ArrayList<Usuario> getListaUsuarios() {
+	public List<Usuario> getListaUsuarios() {
 		return listaUsuarios;
 	}
 
-	public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+	public void setListaUsuarios(List<Usuario> listaUsuarios) {
 		this.listaUsuarios = listaUsuarios;
 	}
 
-	public ArrayList<Compra> getVentas() {
-		return ventas;
+	public List<Compra> getVentas() {
+		return compras;
 	}
 
-	public void setVentas(ArrayList<Compra> ventas) {
-		this.ventas = ventas;
+	public void setVentas(List<Compra> ventas) {
+		this.compras = ventas;
 	}
 
-	public ArrayList<Cliente> getClientes() {
+	public List<Cliente> getClientes() {
 		return clientes;
 	}
 
-	public void setClientes(ArrayList<Cliente> clientes) {
+	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
 	}
 
-	public ArrayList<Encargado> getEncargados() {
+	public List<Encargado> getEncargados() {
 		return encargados;
 	}
 
-	public void setEncargados(ArrayList<Encargado> encargados) {
+	public void setEncargados(List<Encargado> encargados) {
 		this.encargados = encargados;
 	}
 
-	public ArrayList<Producto> getProductos() {
+	public List<Producto> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(ArrayList<Producto> productos) {
+	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
 	}
 	
+	
+
+
+	public List<Integer> getNumeroCompra() {
+		return numeroCompra;
+	}
+
+
+
+	public void setNumeroCompra(List<Integer> numeroCompra) {
+		this.numeroCompra = numeroCompra;
+	}
+
+
 
 	public static Sistema getInstancia() {
 		if (instancia == null) {

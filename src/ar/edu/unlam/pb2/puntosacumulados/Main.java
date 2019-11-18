@@ -18,7 +18,7 @@ public class Main {
 		String nombre, apellido, nombreDeUsuario = null, email = null, password;
 		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false;
-
+		Double saldo = 0.0;
 		Scanner teclado = new Scanner(System.in);
 		do {
 			try {
@@ -34,7 +34,7 @@ public class Main {
 				nombreDeUsuario = JOptionPane.showInputDialog("Ingrese nombre de usuario");
 				email = JOptionPane.showInputDialog("Ingrese su email");
 				password = JOptionPane.showInputDialog("Ingrese password");
-				Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password); // null es
+				Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo); // null es
 																										// localDate
 				try {
 					ingresoPermitido = miSistema.registrarCliente(nuevo);

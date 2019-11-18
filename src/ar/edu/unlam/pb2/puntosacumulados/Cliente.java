@@ -8,9 +8,9 @@ class Cliente extends Persona {
 	private Integer puntos;
 
 	public Cliente(String nombre, String apellido, Integer edad, String nombreDeUsuario, String email,
-			String password) {
+			String password, Double saldo) {
 		super(nombre, apellido, edad);
-		usuarioCliente = new Usuario(nombreDeUsuario, email, password);
+		usuarioCliente = new Usuario(nombreDeUsuario, email, password, saldo);
 		this.puntos = 0;
 	}
 
