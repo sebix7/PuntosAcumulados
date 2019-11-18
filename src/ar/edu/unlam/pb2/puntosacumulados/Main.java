@@ -1,10 +1,7 @@
 package ar.edu.unlam.pb2.puntosacumulados;
 
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 
-import org.junit.Test;
 
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
@@ -12,14 +9,19 @@ public class Main {
 
 	public static void main(String[] args) throws OpcionInvalidaException, UsuarioExistenteException,
 			CorreoExistenteException, DatosDeUsuarioNoValidosException, NombreDeUsuarioNoValidoException,
-			IdNoValidoException, SinClientesException, NullException {
+			IdNoValidoException, SinClientesException, NullException, SaldoInsuficienteException {
 
 		Sistema miSistema = Sistema.getInstancia();
-		String nombre, apellido, nombreDeUsuario = null, email = null, password;
+		String nombre = null, apellido = null, nombreDeUsuario = null, email = null, password = null;
 		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false;
 		Double saldo = 0.0;
-		Scanner teclado = new Scanner(System.in);
+		Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo);
+		Producto nuevoProducto = new Producto(101, "descripcion", 100.0);
+		// Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario,
+		// email, password, saldo); // null es
+		// localDate
+		
 		do {
 			try {
 				opcion1 = miSistema.menuPrincipal();
@@ -28,16 +30,16 @@ public class Main {
 			}
 
 			switch (opcion1) {
+			// REGISTRARSE
 			case 1:
-				nombre = JOptionPane.showInputDialog("Ingrese su nombre");
-				apellido = JOptionPane.showInputDialog("Ingrese su apellido");
-				nombreDeUsuario = JOptionPane.showInputDialog("Ingrese nombre de usuario");
-				email = JOptionPane.showInputDialog("Ingrese su email");
-				password = JOptionPane.showInputDialog("Ingrese password");
-				Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo); // null es
-																										// localDate
+				nuevoCliente.setNombre(JOptionPane.showInputDialog("Ingrese su nombre"));
+				nuevoCliente.setApellido(JOptionPane.showInputDialog("Ingrese su apellido"));
+				nuevoCliente.getUsuarioCliente().setNombreDeUsuario(JOptionPane.showInputDialog("Ingrese nombre de usuario"));
+				nuevoCliente.getUsuarioCliente().setEmail(JOptionPane.showInputDialog("Ingrese su email"));
+				nuevoCliente.getUsuarioCliente().setPassword(JOptionPane.showInputDialog("Ingrese password"));
+				
 				try {
-					ingresoPermitido = miSistema.registrarCliente(nuevo);
+					ingresoPermitido = miSistema.registrarCliente(nuevoCliente);
 				} catch (UsuarioExistenteException e) {
 					e.printStackTrace();
 				} catch (CorreoExistenteException e) {
@@ -46,7 +48,7 @@ public class Main {
 					e.printStackTrace();
 				}
 				break;
-
+			// INICIAR SESION
 			case 2:
 				nombreDeUsuario = JOptionPane.showInputDialog("Ingrese su nombre de usuario");
 				password = JOptionPane.showInputDialog("Ingrese su password");
@@ -56,7 +58,7 @@ public class Main {
 					e.printStackTrace();
 				}
 				break;
-
+			// OLVIDO CONTRASEÑA
 			case 3:
 				nombreDeUsuario = JOptionPane.showInputDialog("Ingrese su nombre de usuario");
 				password = JOptionPane.showInputDialog("Ingrese su nueva password");
@@ -66,7 +68,7 @@ public class Main {
 					e.printStackTrace();
 				}
 				break;
-
+			// MOSTRAR LISTA CLIENTES
 			case 4:
 				try {
 					miSistema.mostrarClientes();
@@ -89,9 +91,11 @@ public class Main {
 				}
 				switch (opcion2) {
 				case 1:
+					miSistema.nuevaCompra(nuevoCliente.getUsuarioCliente(), nuevoProducto,1 );
 					break;
 
 				case 2:
+					miSistema.verPerfilUsuario(nuevoCliente);
 					break;
 
 				case 3:

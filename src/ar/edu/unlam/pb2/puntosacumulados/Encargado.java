@@ -18,6 +18,10 @@ public class Encargado extends Persona {
 	public void setUsuarioEncargado(Usuario usuarioEncargado) {
 		this.usuarioEncargado = usuarioEncargado;
 	}
+	
+	public void crearLocal(String nombre) {
+		Local nuevoLocal = new Local(nombre);
+	}
 
 
 }
