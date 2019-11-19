@@ -2,26 +2,25 @@ package ar.edu.unlam.pb2.puntosacumulados;
 
 import javax.swing.JOptionPane;
 
-
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
 public class Main {
 
 	public static void main(String[] args) throws OpcionInvalidaException, UsuarioExistenteException,
-			CorreoExistenteException, DatosDeUsuarioNoValidosException, NombreDeUsuarioNoValidoException,
-			IdNoValidoException, SinClientesException, NullException, SaldoInsuficienteException {
+			CorreoExistenteException, DatosDeUsuarioNoValidosException, SaldoInsuficienteException, IdNoValidoException,
+			SinClientesException, NullException, NombreDeUsuarioNoValidoException {
 
 		Sistema miSistema = Sistema.getInstancia();
 		String nombre = null, apellido = null, nombreDeUsuario = null, email = null, password = null;
 		Integer opcion1 = 0, opcion2 = 0;
-		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false;
+		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false, salir = false;
 		Double saldo = 0.0;
 		Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo);
 		Producto nuevoProducto = new Producto(101, "descripcion", 100.0);
 		// Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario,
 		// email, password, saldo); // null es
 		// localDate
-		
+
 		do {
 			try {
 				opcion1 = miSistema.menuPrincipal();
@@ -34,10 +33,11 @@ public class Main {
 			case 1:
 				nuevoCliente.setNombre(JOptionPane.showInputDialog("Ingrese su nombre"));
 				nuevoCliente.setApellido(JOptionPane.showInputDialog("Ingrese su apellido"));
-				nuevoCliente.getUsuarioCliente().setNombreDeUsuario(JOptionPane.showInputDialog("Ingrese nombre de usuario"));
+				nuevoCliente.getUsuarioCliente()
+						.setNombreDeUsuario(JOptionPane.showInputDialog("Ingrese nombre de usuario"));
 				nuevoCliente.getUsuarioCliente().setEmail(JOptionPane.showInputDialog("Ingrese su email"));
 				nuevoCliente.getUsuarioCliente().setPassword(JOptionPane.showInputDialog("Ingrese password"));
-				
+
 				try {
 					ingresoPermitido = miSistema.registrarCliente(nuevoCliente);
 				} catch (UsuarioExistenteException e) {
@@ -68,50 +68,52 @@ public class Main {
 					e.printStackTrace();
 				}
 				break;
-			// MOSTRAR LISTA CLIENTES
-			case 4:
-				try {
-					miSistema.mostrarClientes();
-				} catch (SinClientesException e) {
-					e.printStackTrace();
-				}
-				break;
 
-			case 5:
+			case 4:
 				login = null;
 				ingresoPermitido = null;
 				break;
 			}
 
 			if (ingresoPermitido == true || login == true) {
-				try {
-					opcion2 = miSistema.submenu();
-				} catch (OpcionInvalidaException e1) {
-					e1.printStackTrace();
-				}
-				switch (opcion2) {
-				case 1:
-					miSistema.nuevaCompra(nuevoCliente.getUsuarioCliente(), nuevoProducto,1 );
-					break;
+				do {
+					try {
+						opcion2 = miSistema.submenu();
+					} catch (OpcionInvalidaException e1) {
+						e1.printStackTrace();
+					}
+					switch (opcion2) {
+					case 1:
+						try {
+							salir = miSistema.comprar(nuevoCliente);
+						} catch (OpcionInvalidaException e) {
+							e.printStackTrace();
+						} catch (SaldoInsuficienteException e) {
+							e.printStackTrace();
+						} catch (NombreDeUsuarioNoValidoException e) {
+							e.printStackTrace();
+						}
+						break;
 
-				case 2:
-					miSistema.verPerfilUsuario(nuevoCliente);
-					break;
+					case 2:
+						miSistema.verPerfilUsuario(nuevoCliente);
+						break;
 
-				case 3:
-					miSistema.eliminarUsuario(email);
-					break;
+					case 3:
+						miSistema.eliminarUsuario(email);
+						break;
 
-				case 4:
-					ingresoPermitido = false;
-					login = false;
-					break;
+					case 4:
+						ingresoPermitido = false;
+						login = false;
+						break;
 
-				}
+					}
+				} while (opcion2 == 2 || opcion2 == 1 || salir == true);
 			}
 
-		} while (opcion1 < 1 || opcion1 > 5 || opcion1 == 3 || opcion1 == 4 || opcion2 == 3 || login == false
-				|| ingresoPermitido == false);
+		} while (opcion1 < 1 || opcion1 > 4 || opcion1 == 3 || opcion1 == 4 || opcion2 == 3 || opcion2 == 4
+				|| login == false || ingresoPermitido == false);
 	}
 
 }
