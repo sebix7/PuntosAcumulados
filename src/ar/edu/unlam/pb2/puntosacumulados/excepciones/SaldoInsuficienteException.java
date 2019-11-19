@@ -5,6 +5,6 @@ import javax.swing.JOptionPane;
 public class SaldoInsuficienteException extends Exception {
 	
 	public SaldoInsuficienteException() {
-		JOptionPane.showMessageDialog(null, "Saldo insuficiente para realizar la compra");
+		JOptionPane.showMessageDialog(null, "Saldo o puntos insuficientes para realizar la compra");
 	}
 }

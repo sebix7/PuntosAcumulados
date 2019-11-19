@@ -14,15 +14,14 @@ public class Sistema {
 	private static Sistema instancia;
 	private Usuario usuarioLogueado;
 	private Compra compra;
-	private Producto producto;
+	private static Producto producto;
 	private Cliente cliente;
 	private FormaPago formaPago;
-	private Integer cantidadPuntos;
 	private List<Usuario> listaUsuarios = new ArrayList<>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private List<Encargado> encargados = new ArrayList<Encargado>();
-	private List<Producto> productos = new ArrayList<Producto>();
+	private static List<Producto> productos = new ArrayList<Producto>();
 	private List<Integer> numeroCompra = new LinkedList<Integer>();
 
 	// Constructor default
@@ -98,8 +97,8 @@ public class Sistema {
 	// MENU PRINCIPAL - POR AHORA NO FUE MODIFICADO
 	public Integer menuPrincipal() throws OpcionInvalidaException {
 		Integer seleccion;
-		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
-				"1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Ver lista de clientes \n5. Salir"));
+		seleccion = Integer.parseInt(JOptionPane
+				.showInputDialog("1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Salir"));
 		if (seleccion >= 1 && seleccion <= 6) {
 			return seleccion;
 		} else {
@@ -107,7 +106,7 @@ public class Sistema {
 		}
 	}
 
-	// SUBMENU - POR AHORA NO FUE MODIFICADO
+	// SUBMENU
 	public Integer submenu() throws OpcionInvalidaException {
 		Integer seleccion;
 		seleccion = Integer.parseInt(JOptionPane.showInputDialog(
@@ -140,52 +139,119 @@ public class Sistema {
 		return exito;
 	}
 
-	// MOSTRAR LISTA DE CLIENTES
-	public void mostrarClientes() throws SinClientesException {
-		if (clientes.size() > 0) {
-			for (Cliente cliente : clientes) {
-				System.out.println(cliente.toString());
-			}
-		} else {
-			throw new SinClientesException();
-		}
-	}
-
 	// CREAR NUMERO DE ORDEN
 	public Integer generarNumeroCompra() {
 		numeroCompra.add(0);
 		return numeroCompra.size();
 	}
 
-	// NUEVA COMPRA
+	// METODO COMPRAR
+	public Boolean comprar(Cliente cliente)
+			throws OpcionInvalidaException, SaldoInsuficienteException, NombreDeUsuarioNoValidoException {
+		Boolean salir = false;
+		;
+		Integer cantidadPuntos = 0;
+		Producto productoAComprar;
+		Integer aux;
+		productoAComprar = this.eleccionProducto();
+		if (productoAComprar == null) {
+			salir = true;
+		} else {
+			aux = this.eleccionMetodoDePago();
+			if (aux == 1) {
+				for (Cliente i : clientes) {
+					if (i.getUsuarioCliente().getNombreDeUsuario()
+							.equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
+						if (i.getUsuarioCliente().getSaldo() > productoAComprar.getPrecio()) {
+							this.compra.setNroCompra(generarNumeroCompra());
+							this.productos.add(productoAComprar);
+							this.compra.setCantidadPuntos(productoAComprar.getValorEnPuntos());
+							compras.add(this.compra);
+							cliente.getUsuarioCliente()
+									.setSaldo(cliente.getUsuarioCliente().getSaldo() - productoAComprar.getPrecio());
+							JOptionPane.showMessageDialog(null, "¡Compra exitosa!");
 
-	public void nuevaCompra(Usuario usuario, Producto producto, Integer formaPago) throws NombreDeUsuarioNoValidoException, SaldoInsuficienteException {
-		int cantidadPuntos = 0;
-		for (Usuario i : listaUsuarios) {
-			if (i.getNombreDeUsuario().equals(usuario.getNombreDeUsuario())) {
-				if(usuario.getSaldo()>producto.getPrecio()) {
-					this.compra.setNroCompra(generarNumeroCompra());
-					this.productos.add(producto);
-					this.compra.setCantidadPuntos(producto.getValorEnPuntos());
-					compras.add(this.compra);
-				}else {
-					throw new SaldoInsuficienteException();
+							// recorro la lista de compras y acumulo los puntos.
+							for (Compra c : compras) {
+								cantidadPuntos = +c.getCantidadPuntos();
+							}
+							this.cliente.setPuntos(cantidadPuntos + cliente.getPuntos());
+						} else {
+							throw new SaldoInsuficienteException();
+						}
+					} else {
+						throw new NombreDeUsuarioNoValidoException();
+					}
 				}
-				
-				// recorro la lista de compras y acumulo los puntos.
-				for (Compra c : compras) {
-					cantidadPuntos = cantidadPuntos + c.getCantidadPuntos();
-					this.cliente.setPuntos(cantidadPuntos);
+			} else if (aux == 2) {
+				for (Cliente i : clientes) {
+					if (i.getUsuarioCliente().getNombreDeUsuario()
+							.equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
+						if (i.getPuntos() > productoAComprar.getValorEnPuntos()) {
+							this.compra.setNroCompra(generarNumeroCompra());
+							this.productos.add(productoAComprar);
+							compras.add(this.compra);
+							i.setPuntos(i.getPuntos() - productoAComprar.getValorEnPuntos());
+							JOptionPane.showMessageDialog(null, "¡Compra exitosa!");
+						} else {
+							throw new SaldoInsuficienteException();
+						}
+					}
 				}
-			} else {
-				throw new NombreDeUsuarioNoValidoException();
-			}
+			} else
+				throw new OpcionInvalidaException();
 		}
+		return salir;
+	}
+
+	// ELECCION DE PRODUCTO A COMPRAR
+	private static Producto eleccionProducto() {
+		Integer seleccionProducto;
+		Integer id;
+		producto = null;
+		seleccionProducto = Integer.parseInt(JOptionPane.showInputDialog(
+				"¿Qué producto desea comprar? \n1. Perfume \n2. Cosmetico \n3. Jabón Liquido \n4. Shampoo \n5. Cancelar"));
+		switch (seleccionProducto) {
+		case 1:
+			id = +productos.size();
+			Producto perfume = new Producto(id, "perfume", 90.0);
+			producto = perfume;
+			break;
+
+		case 2:
+			id = +productos.size();
+			Producto cosmetico = new Producto(id, "cosmetico", 80.0);
+			producto = cosmetico;
+			break;
+
+		case 3:
+			id = +productos.size();
+			Producto jabon_liquido = new Producto(id, "jabon liquido", 70.0);
+			producto = jabon_liquido;
+			break;
+
+		case 4:
+			id = +productos.size();
+			Producto shampoo = new Producto(id, "shampoo", 60.0);
+			producto = shampoo;
+			break;
+
+		case 5:
+			break;
+		}
+		return producto;
 
 	}
 
-	
+	// ELECCION DE METODO DE PAGO
+	private static Integer eleccionMetodoDePago() throws OpcionInvalidaException {
+		Integer seleccionMetodoPago;
+		seleccionMetodoPago = Integer
+				.parseInt(JOptionPane.showInputDialog("¿Elija un metodo de pago \n1. Efectivo \n2. Puntos"));
+		return seleccionMetodoPago;
+	}
 
+	// VER PERFIL
 	public void verPerfilUsuario(Cliente cliente) {
 		for (Cliente c : clientes) {
 			if (c.getUsuarioCliente().getNombreDeUsuario().equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
