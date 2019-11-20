@@ -6,21 +6,15 @@ import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
 public class Main {
 
-	public static void main(String[] args) throws OpcionInvalidaException, UsuarioExistenteException,
-			CorreoExistenteException, DatosDeUsuarioNoValidosException, SaldoInsuficienteException, IdNoValidoException,
-			SinClientesException, NullException, NombreDeUsuarioNoValidoException {
+	public static void main(String[] args) {
 
 		Sistema miSistema = Sistema.getInstancia();
 		String nombre = null, apellido = null, nombreDeUsuario = null, email = null, password = null;
 		Integer opcion1 = 0, opcion2 = 0;
-		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false, salir = false;
+		Boolean ingresoPermitido = false, login = false, salir = false;
 		Double saldo = 0.0;
 		Integer puntos = 0;
 		Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo, puntos);
-		Producto nuevoProducto = new Producto("descripcion", 100.0);
-		// Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario,
-		// email, password, saldo); // null es
-		// localDate
 
 		do {
 			try {
@@ -38,7 +32,8 @@ public class Main {
 						.setNombreDeUsuario(JOptionPane.showInputDialog("Ingrese nombre de usuario"));
 				nuevoCliente.getUsuarioCliente().setEmail(JOptionPane.showInputDialog("Ingrese su email"));
 				nuevoCliente.getUsuarioCliente().setPassword(JOptionPane.showInputDialog("Ingrese password"));
-				nuevoCliente.getUsuarioCliente().setSaldo((double) Integer.parseInt(JOptionPane.showInputDialog("Ingrese saldo")));
+				nuevoCliente.getUsuarioCliente()
+						.setSaldo((double) Integer.parseInt(JOptionPane.showInputDialog("Ingrese saldo")));
 				nuevoCliente.setPuntos(Integer.parseInt(JOptionPane.showInputDialog("Ingrese puntos")));
 
 				try {
@@ -109,6 +104,7 @@ public class Main {
 					case 4:
 						ingresoPermitido = false;
 						login = false;
+						salir = false;
 						break;
 
 					}

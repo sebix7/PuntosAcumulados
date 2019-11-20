@@ -7,13 +7,12 @@ class Cliente extends Persona {
 	private Usuario usuarioCliente;
 	private Integer puntos;
 
-	public Cliente(String nombre, String apellido, Integer edad, String nombreDeUsuario, String email,
-			String password, Double saldo, Integer puntos) {
+	public Cliente(String nombre, String apellido, Integer edad, String nombreDeUsuario, String email, String password,
+			Double saldo, Integer puntos) {
 		super(nombre, apellido, edad);
-		usuarioCliente = new Usuario(nombreDeUsuario, email, password,saldo);
+		usuarioCliente = new Usuario(nombreDeUsuario, email, password, saldo);
 		this.puntos = puntos;
 	}
-
 
 	public Integer getPuntos() {
 		return puntos;
@@ -30,10 +29,6 @@ class Cliente extends Persona {
 	public void setUsuarioCliente(Usuario usuarioCliente) {
 		this.usuarioCliente = usuarioCliente;
 	}
-	
-	
-	
-	
 
 	@Override
 	public String toString() {

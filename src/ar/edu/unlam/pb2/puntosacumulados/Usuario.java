@@ -12,8 +12,8 @@ public class Usuario {
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.saldo = 50.0;
 	}
-	
-	public Usuario(String nombreDeUsuario, String email, String password,Double saldo) {
+
+	public Usuario(String nombreDeUsuario, String email, String password, Double saldo) {
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.email = email;
 		this.password = password;
@@ -91,9 +91,5 @@ public class Usuario {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
 
 }

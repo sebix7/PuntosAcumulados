@@ -14,15 +14,15 @@ public class TestIniciarSesion {
 
 	@Test
 	public void testQueVerificaQueSePuedeIniciarSesionConUnClienteRegistradoOExistente() throws NullException {
-		Local miLocal = new Local("Pizzeria Los hijos de puta");
-		Sistema miS = new Sistema();
+		Local miLocal = new Local("Perfumeria Penelope Glamour");
+		Sistema miS = new Sistema(miLocal);
 		String nombre1 = "Sebastian";
 		String apellido1 = "Rodriguez";
 		String nombreDeUsuario1 = "sebix7";
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
 		Double saldo1 = 0.0;
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1,9000);
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1, saldo1, 9000);
 
 		try {
 			miS.registrarCliente(nuevo1);
@@ -43,8 +43,8 @@ public class TestIniciarSesion {
 	@Test(expected = DatosDeUsuarioNoValidosException.class)
 	public void testQueVerificaQueNoSePuedeIniciarSesionConUnClienteNoRegistradoOInexistente()
 			throws DatosDeUsuarioNoValidosException {
-		Local miLocal = new Local("Pizzeria Los hijos de puta");
-		Sistema miS = new Sistema();
+		Local miLocal = new Local("Perfumeria Penelope Glamour");
+		Sistema miS = new Sistema(miLocal);
 
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";

@@ -3,7 +3,7 @@ package ar.edu.unlam.pb2.puntosacumulados;
 import java.time.LocalDate;
 
 public class Persona {
-	
+
 	private String nombre;
 	private String apellido;
 	private Integer edad;
@@ -13,7 +13,7 @@ public class Persona {
 		this.apellido = apellido;
 		this.edad = edad;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
