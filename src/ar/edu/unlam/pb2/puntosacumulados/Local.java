@@ -1,33 +1,19 @@
 package ar.edu.unlam.pb2.puntosacumulados;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Local {
-	private String nombreLocal;
-	private List<Producto> productosDisponiblesParaComprar = new ArrayList<Producto>();
-	
-	public Local(String nombreLocal) {
-		this.nombreLocal = nombreLocal;
+
+	private String nombre;
+
+	public Local(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public List<Producto> getProductosDisponiblesParaComprar() {
-		return productosDisponiblesParaComprar;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setProductosDisponiblesParaComprar(List<Producto> productosDisponiblesParaComprar) {
-		this.productosDisponiblesParaComprar = productosDisponiblesParaComprar;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
-
-	public String getNombreLocal() {
-		return nombreLocal;
-	}
-
-	public void setNombreLocal(String nombreLocal) {
-		this.nombreLocal = nombreLocal;
-	}
-	
-	
-
 
 }

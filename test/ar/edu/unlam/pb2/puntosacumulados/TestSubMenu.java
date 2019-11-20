@@ -7,13 +7,10 @@ import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
 public class TestSubMenu {
 
-
-
-
 	@Test
 	public void testOpcionSubmenuCorrecto() {
-		Local miLocal = new Local("Pizzeria Los hijos de puta");
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local("Perfumeria Penelope Glamour");
+		Sistema miSistema = new Sistema(miLocal);
 		Integer vO = 0;
 
 		try {
@@ -29,8 +26,8 @@ public class TestSubMenu {
 
 	@Test(expected = OpcionInvalidaException.class)
 	public void testOpcionSubmenuIncorrecto() throws OpcionInvalidaException {
-		Local miLocal = new Local("Pizzeria Los hijos de puta");
-		Sistema miSistema = new Sistema();
+		Local miLocal = new Local("Perfumeria Penelope Glamour");
+		Sistema miSistema = new Sistema(miLocal);
 
 		miSistema.submenu(); // Debe ingresarse un valor distinto de 1 o 2 para quese cumpla lo esperado.
 	}

@@ -13,6 +13,7 @@ import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
 public class Sistema {
 
+	private static Local local;
 	private static Sistema instancia;
 	private Usuario usuarioLogueado;
 	private Compra compra;
@@ -21,12 +22,12 @@ public class Sistema {
 	private List<Usuario> listaUsuarios = new ArrayList<>();
 	private List<Compra> compras = new ArrayList<Compra>();
 	private Set<Cliente> clientes = new HashSet<Cliente>();
-	private List<Encargado> encargados = new ArrayList<Encargado>();
 	private List<Producto> productos = new ArrayList<Producto>();
 	private List<Integer> numeroCompra = new LinkedList<Integer>();
 
-	// Constructor default
-	public Sistema() {
+	// CONSTRUCTOR
+	public Sistema(Local local) {
+		this.local = local;
 		this.compra = new Compra(producto);
 		this.cliente = new Cliente(null, null, null, null, null, null, null, null);
 	}
@@ -95,12 +96,12 @@ public class Sistema {
 		return exito;
 	}
 
-	// MENU PRINCIPAL - POR AHORA NO FUE MODIFICADO
+	// MENU PRINCIPAL
 	public Integer menuPrincipal() throws OpcionInvalidaException {
 		Integer seleccion;
 		seleccion = Integer.parseInt(JOptionPane
 				.showInputDialog("1. Registrarse \n2. Iniciar sesion \n3. ¿Has olvidado tu contraseña? \n4. Salir"));
-		if (seleccion >= 1 && seleccion <= 6) {
+		if (seleccion >= 1 && seleccion <= 4) {
 			return seleccion;
 		} else {
 			throw new OpcionInvalidaException();
@@ -176,7 +177,7 @@ public class Sistema {
 							for (Compra c : compras) {
 								cantidadPuntos += c.getCantidadPuntos();
 							}
-							this.cliente.setPuntos(cantidadPuntos);
+							i.setPuntos(cantidadPuntos);
 						} else {
 							throw new SaldoInsuficienteException();
 						}
@@ -210,7 +211,7 @@ public class Sistema {
 		Integer seleccionProducto;
 		producto = null;
 		seleccionProducto = Integer.parseInt(JOptionPane.showInputDialog(
-				"¿Qué producto desea comprar? \n1. Perfume $90 \n2. Cosmetico $80 \n3. Jabón Liquido $70 \n4. Shampoo Importado $260 \n5. Cancelar"));
+				"¿Qué producto desea comprar? \n1. Perfume ($90 o 900 puntos) \n2. Cosmetico ($80 u 800 puntos) \n3. Jabón Liquido ($70 o 700 puntos) \n4. Shampoo Importado ($260 o 2600 puntos) \n5. Cancelar"));
 		switch (seleccionProducto) {
 		case 1:
 			Producto perfume = new Producto("perfume", 90.0);
@@ -225,7 +226,7 @@ public class Sistema {
 			break;
 
 		case 3:
-			
+
 			Producto jabon_liquido = new Producto("jabon liquido", 70.0);
 			producto = jabon_liquido;
 			producto.setPrecio(70.0);
@@ -290,14 +291,6 @@ public class Sistema {
 		this.clientes = clientes;
 	}
 
-	public List<Encargado> getEncargados() {
-		return encargados;
-	}
-
-	public void setEncargados(List<Encargado> encargados) {
-		this.encargados = encargados;
-	}
-
 	public List<Producto> getProductos() {
 		return productos;
 	}
@@ -348,7 +341,7 @@ public class Sistema {
 
 	public static Sistema getInstancia() {
 		if (instancia == null) {
-			instancia = new Sistema();
+			instancia = new Sistema(local);
 		}
 		return instancia;
 	}
