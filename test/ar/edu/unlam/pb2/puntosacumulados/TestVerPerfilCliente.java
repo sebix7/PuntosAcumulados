@@ -10,7 +10,7 @@ public class TestVerPerfilCliente {
 	public void verPerfilDeCliente() {
 
 		Sistema miSistema = new Sistema();
-		Cliente miCliente = new Cliente("Naruto", "Uzumaki", 20, "NarutoHokage", "naruto@gmail.com","12345", 1500.0);
+		Cliente miCliente = new Cliente("Naruto", "Uzumaki", 20, "NarutoHokage", "naruto@gmail.com","12345", 1500.0,9000);
 		miSistema.getClientes().add(miCliente);
 		miSistema.verPerfilUsuario(miCliente);
 		assertEquals(1, miSistema.getClientes().size());

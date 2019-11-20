@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.CorreoExistenteException;
+import ar.edu.unlam.pb2.puntosacumulados.excepciones.NullException;
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.UsuarioExistenteException;
 
 public class TestRegistrarCliente {
@@ -20,7 +21,7 @@ public class TestRegistrarCliente {
 		String email = "sebeatport@gmail.com";
 		String password = "pryda";
 		Double saldo= 0.0;
-		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password,saldo);
+		Cliente nuevo = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password,saldo,9000);
 
 		try {
 			Assert.assertTrue(miSistema.registrarCliente(nuevo));
@@ -44,14 +45,14 @@ public class TestRegistrarCliente {
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
 		Double saldo1 = 0.0;
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1);
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1,9000);
 		String nombre2 = "Mauro";
 		String apellido2 = "Perrone";
 		String nombreDeUsuario2 = "mantonella";
 		String email2 = "sebeatport@gmail.com";
 		String password2 = "iloverubius";
 		Double saldo2 = 0.0;
-		Cliente nuevo2 = new Cliente(nombre2, apellido2, null, nombreDeUsuario2, email2, password2,saldo2);
+		Cliente nuevo2 = new Cliente(nombre2, apellido2, null, nombreDeUsuario2, email2, password2,saldo2,9000);
 
 		miS.registrarCliente(nuevo1);
 
@@ -72,14 +73,14 @@ public class TestRegistrarCliente {
 		String password1 = "pryda";
 		Double saldo1 = 0.0;
 	
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1);
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1,9000);
 		String nombre3 = "Rodrigo";
 		String apellido3 = "Acosta";
 		String nombreDeUsuario3 = "sebix7";
 		String email3 = "elrodri@gmail.com";
 		String password3 = "Dioxis";
 		Double saldo2 = 0.0;
-		Cliente nuevo3 = new Cliente(nombre3, apellido3, null, nombreDeUsuario3, email3, password3,saldo2);
+		Cliente nuevo3 = new Cliente(nombre3, apellido3, null, nombreDeUsuario3, email3, password3,saldo2,9000);
 
 		miS.registrarCliente(nuevo1);
 

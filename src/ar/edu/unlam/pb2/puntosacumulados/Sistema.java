@@ -1,9 +1,11 @@
 package ar.edu.unlam.pb2.puntosacumulados;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -16,18 +18,17 @@ public class Sistema {
 	private Compra compra;
 	private static Producto producto;
 	private Cliente cliente;
-	private FormaPago formaPago;
 	private List<Usuario> listaUsuarios = new ArrayList<>();
 	private List<Compra> compras = new ArrayList<Compra>();
-	private List<Cliente> clientes = new ArrayList<Cliente>();
+	private Set<Cliente> clientes = new HashSet<Cliente>();
 	private List<Encargado> encargados = new ArrayList<Encargado>();
-	private static List<Producto> productos = new ArrayList<Producto>();
+	private List<Producto> productos = new ArrayList<Producto>();
 	private List<Integer> numeroCompra = new LinkedList<Integer>();
 
 	// Constructor default
 	public Sistema() {
 		this.compra = new Compra(producto);
-		this.cliente = new Cliente(null, null, null, null, null, null, null);
+		this.cliente = new Cliente(null, null, null, null, null, null, null, null);
 	}
 
 	// REGISTRO
@@ -162,7 +163,7 @@ public class Sistema {
 				for (Cliente i : clientes) {
 					if (i.getUsuarioCliente().getNombreDeUsuario()
 							.equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
-						if (i.getUsuarioCliente().getSaldo() > productoAComprar.getPrecio()) {
+						if (i.getUsuarioCliente().getSaldo() >= productoAComprar.getPrecio()) {
 							this.compra.setNroCompra(generarNumeroCompra());
 							this.productos.add(productoAComprar);
 							this.compra.setCantidadPuntos(productoAComprar.getValorEnPuntos());
@@ -173,9 +174,9 @@ public class Sistema {
 
 							// recorro la lista de compras y acumulo los puntos.
 							for (Compra c : compras) {
-								cantidadPuntos = +c.getCantidadPuntos();
+								cantidadPuntos += c.getCantidadPuntos();
 							}
-							this.cliente.setPuntos(cantidadPuntos + cliente.getPuntos());
+							this.cliente.setPuntos(cantidadPuntos);
 						} else {
 							throw new SaldoInsuficienteException();
 						}
@@ -187,7 +188,7 @@ public class Sistema {
 				for (Cliente i : clientes) {
 					if (i.getUsuarioCliente().getNombreDeUsuario()
 							.equals(cliente.getUsuarioCliente().getNombreDeUsuario())) {
-						if (i.getPuntos() > productoAComprar.getValorEnPuntos()) {
+						if (i.getPuntos() >= productoAComprar.getValorEnPuntos()) {
 							this.compra.setNroCompra(generarNumeroCompra());
 							this.productos.add(productoAComprar);
 							compras.add(this.compra);
@@ -207,33 +208,33 @@ public class Sistema {
 	// ELECCION DE PRODUCTO A COMPRAR
 	private static Producto eleccionProducto() {
 		Integer seleccionProducto;
-		Integer id;
 		producto = null;
 		seleccionProducto = Integer.parseInt(JOptionPane.showInputDialog(
-				"¿Qué producto desea comprar? \n1. Perfume \n2. Cosmetico \n3. Jabón Liquido \n4. Shampoo \n5. Cancelar"));
+				"¿Qué producto desea comprar? \n1. Perfume $90 \n2. Cosmetico $80 \n3. Jabón Liquido $70 \n4. Shampoo Importado $260 \n5. Cancelar"));
 		switch (seleccionProducto) {
 		case 1:
-			id = +productos.size();
-			Producto perfume = new Producto(id, "perfume", 90.0);
+			Producto perfume = new Producto("perfume", 90.0);
 			producto = perfume;
+			producto.setPrecio(90.0);
 			break;
 
 		case 2:
-			id = +productos.size();
-			Producto cosmetico = new Producto(id, "cosmetico", 80.0);
+			Producto cosmetico = new Producto("cosmetico", 80.0);
 			producto = cosmetico;
+			producto.setPrecio(80.0);
 			break;
 
 		case 3:
-			id = +productos.size();
-			Producto jabon_liquido = new Producto(id, "jabon liquido", 70.0);
+			
+			Producto jabon_liquido = new Producto("jabon liquido", 70.0);
 			producto = jabon_liquido;
+			producto.setPrecio(70.0);
 			break;
 
 		case 4:
-			id = +productos.size();
-			Producto shampoo = new Producto(id, "shampoo", 60.0);
+			Producto shampoo = new Producto("shampoo", 260.0);
 			producto = shampoo;
+			producto.setPrecio(260.0);
 			break;
 
 		case 5:
@@ -281,11 +282,11 @@ public class Sistema {
 		this.compras = ventas;
 	}
 
-	public List<Cliente> getClientes() {
+	public Set<Cliente> getClientes() {
 		return clientes;
 	}
 
-	public void setClientes(List<Cliente> clientes) {
+	public void setClientes(Set<Cliente> clientes) {
 		this.clientes = clientes;
 	}
 

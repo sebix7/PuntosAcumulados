@@ -10,14 +10,14 @@ public class Usuario {
 
 	public Usuario(String nombreDeUsuario) {
 		this.nombreDeUsuario = nombreDeUsuario;
-		this.saldo = 10000.0;
+		this.saldo = 50.0;
 	}
 	
-	public Usuario(String nombreDeUsuario, String email, String password) {
+	public Usuario(String nombreDeUsuario, String email, String password,Double saldo) {
 		this.nombreDeUsuario = nombreDeUsuario;
 		this.email = email;
 		this.password = password;
-		this.saldo = 10000.0;
+		this.saldo = saldo;
 	}
 
 	public String getNombreDeUsuario() {
@@ -58,6 +58,38 @@ public class Usuario {
 
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
+	}
+
+	// dos usuarios son iguales si tienen el mismo mail o el mismo usuario
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((nombreDeUsuario == null) ? 0 : nombreDeUsuario.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (nombreDeUsuario == null) {
+			if (other.nombreDeUsuario != null)
+				return false;
+		} else if (!nombreDeUsuario.equals(other.nombreDeUsuario))
+			return false;
+		return true;
 	}
 	
 	
