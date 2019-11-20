@@ -15,8 +15,9 @@ public class Main {
 		Integer opcion1 = 0, opcion2 = 0;
 		Boolean ingresoPermitido = false, login = false, recuperacionExitosa = false, salir = false;
 		Double saldo = 0.0;
-		Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo);
-		Producto nuevoProducto = new Producto(101, "descripcion", 100.0);
+		Integer puntos = 0;
+		Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario, email, password, saldo, puntos);
+		Producto nuevoProducto = new Producto("descripcion", 100.0);
 		// Cliente nuevoCliente = new Cliente(nombre, apellido, null, nombreDeUsuario,
 		// email, password, saldo); // null es
 		// localDate
@@ -37,6 +38,8 @@ public class Main {
 						.setNombreDeUsuario(JOptionPane.showInputDialog("Ingrese nombre de usuario"));
 				nuevoCliente.getUsuarioCliente().setEmail(JOptionPane.showInputDialog("Ingrese su email"));
 				nuevoCliente.getUsuarioCliente().setPassword(JOptionPane.showInputDialog("Ingrese password"));
+				nuevoCliente.getUsuarioCliente().setSaldo((double) Integer.parseInt(JOptionPane.showInputDialog("Ingrese saldo")));
+				nuevoCliente.setPuntos(Integer.parseInt(JOptionPane.showInputDialog("Ingrese puntos")));
 
 				try {
 					ingresoPermitido = miSistema.registrarCliente(nuevoCliente);

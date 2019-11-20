@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.*;
 
-public class TestPuntosAcumulados {
+public class TestSubMenu {
 
 
 

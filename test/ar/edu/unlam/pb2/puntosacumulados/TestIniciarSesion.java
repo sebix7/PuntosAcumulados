@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.CorreoExistenteException;
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.DatosDeUsuarioNoValidosException;
+import ar.edu.unlam.pb2.puntosacumulados.excepciones.NullException;
 import ar.edu.unlam.pb2.puntosacumulados.excepciones.UsuarioExistenteException;
 
 public class TestIniciarSesion {
@@ -21,7 +22,7 @@ public class TestIniciarSesion {
 		String email1 = "sebeatport@gmail.com";
 		String password1 = "pryda";
 		Double saldo1 = 0.0;
-		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1);
+		Cliente nuevo1 = new Cliente(nombre1, apellido1, null, nombreDeUsuario1, email1, password1,saldo1,9000);
 
 		try {
 			miS.registrarCliente(nuevo1);

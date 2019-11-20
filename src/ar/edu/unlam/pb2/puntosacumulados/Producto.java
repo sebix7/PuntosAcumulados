@@ -2,15 +2,14 @@ package ar.edu.unlam.pb2.puntosacumulados;
 
 public class Producto {
 
-	private Integer idProducto;
 	private String descripcion;
 	private Double precio;
 	private Integer valorEnPuntos; // es el precio por 10, genera cantidad de puntos en base al precio.
 
-	public Producto(Integer idProducto, String descripcion, Double precio) {
+	public Producto(String descripcion, Double precio) {
 		this.descripcion = descripcion;
 		this.precio = precio;
-		this.idProducto = idProducto;
+		
 		this.valorEnPuntos = (int) (precio * 10);
 	}
 
@@ -30,13 +29,7 @@ public class Producto {
 		this.precio = precio;
 	}
 
-	public Integer getIdProducto() {
-		return idProducto;
-	}
-
-	public void setIdProducto(Integer idProducto) {
-		this.idProducto = idProducto;
-	}
+	
 
 	public Integer getValorEnPuntos() {
 		return valorEnPuntos;
